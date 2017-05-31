@@ -12,5 +12,8 @@
             "email": "niels.de.blaauw@gmail.com"
         }
     ],
+    "autoload":{
+      "files": ["init.php"]
+    },
     "minimum-stability": "stable"
 }
