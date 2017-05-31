@@ -1,0 +1,16 @@
+{
+    "name": "niels-de-blaauw/acf-qc",
+    "description": "ACF Quality Control checker",
+    "type": "library",
+    "require": {
+        "fzaninotto/faker": "^1.6"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Niels de Blaauw",
+            "email": "niels.de.blaauw@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable"
+}
