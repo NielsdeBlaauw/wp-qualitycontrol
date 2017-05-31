@@ -13,7 +13,10 @@
         }
     ],
     "autoload":{
-      "files": ["init.php"]
+      "files": ["init.php"],
+      "psr-4": {
+        "NDB\\ACFQC\\":"src/"
+      }
     },
     "minimum-stability": "stable"
 }
