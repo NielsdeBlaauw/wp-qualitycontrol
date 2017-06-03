@@ -4,6 +4,7 @@ namespace NDB\ACFQC;
 
 class Generator{
   const META_IDENTIFIER_KEY = 'acf-qc-generated';
+  const NB_POSTS_PER_TYPE = 2;
 
   public $post_types = array();
   public $options = array();
@@ -35,7 +36,8 @@ class Generator{
   public function generate(){
     foreach($this->post_types as $post_type){
       \WP_CLI::log(sprintf('Creating post for post_type %s', $post_type->post_type->name));
-      for($i = 0; $i <= 10; $i += 1){
+      for($i = 0; $i < self::NB_POSTS_PER_TYPE; $i += 1){
+        \WP_CLI::line(sprintf('Generating %s %d/%d', $post_type->post_type->name, $i+1, self::NB_POSTS_PER_TYPE));
         $post_type->generate();
       }
     }

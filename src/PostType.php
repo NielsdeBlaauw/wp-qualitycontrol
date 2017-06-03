@@ -2,6 +2,8 @@
 
 namespace NDB\ACFQC;
 
+use NDB\ACFQC\FieldTypes\Image;
+
 class PostType{
   public $post_type = null;
   public function __construct(\WP_Post_Type $post_type, Generator $generator){
@@ -10,6 +12,7 @@ class PostType{
   }
 
   public function generate(){
+    $image_provider = new Image(array(), $this);
     $post_id = wp_insert_post(array(
       'post_title'=>$this->generator->faker->sentence($this->generator->faker->numberBetween(1,200)),
       'post_type'=>$this->post_type->name,
@@ -22,6 +25,7 @@ class PostType{
         Generator::META_IDENTIFIER_KEY=>'1',
       ),
     ));
+    set_post_thumbnail($post_id, $image_provider->generate($post_id));
     $this->fill_acf_fields($post_id);
   }
 

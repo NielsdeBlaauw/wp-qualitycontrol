@@ -5,6 +5,7 @@ use NDB\ACFQC\FieldTypes\URL;
 use NDB\ACFQC\FieldTypes\Tab;
 use NDB\ACFQC\FieldTypes\Text;
 use NDB\ACFQC\FieldTypes\RichText;
+use NDB\ACFQC\FieldTypes\Image;
 use NDB\ACFQC\FieldTypes\TextArea;
 use NDB\ACFQC\FieldTypes\TrueFalse;
 use NDB\ACFQC\FieldTypes\FlexibleContent;
@@ -33,6 +34,9 @@ class FieldFactory{
         break;
       case 'wysiwyg':
         return new RichText($field, $post_type);
+        break;
+      case 'image':
+        return new Image($field, $post_type);
         break;
       default:
         return new NotImplementedField($field, $post_type);

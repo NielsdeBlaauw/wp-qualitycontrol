@@ -5,7 +5,7 @@ use NDB\ACFQC\PostType;
 
 abstract class Base{
   const MAX_LENGTH_DEFAULT = 3000;
-  
+
   public function __construct(array $field, PostType $post_type){
     $this->field = $field;
     $this->post_type = $post_type;
@@ -23,10 +23,10 @@ abstract class Base{
   }
 
   public function get_max() : int{
-    if(empty($this->field['maxLength'])){
+    if(empty($this->field['maxlength'])){
       \WP_CLI::warning(sprintf('No max length set for field %s. Falling back to default %d', $this->field['name'], self::MAX_LENGTH_DEFAULT));
       return self::MAX_LENGTH_DEFAULT;
     }
-    return (int) $this->field['maxLength'];
+    return (int) $this->field['maxlength'];
   }
 }
