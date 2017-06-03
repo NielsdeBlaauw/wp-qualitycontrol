@@ -4,6 +4,7 @@ namespace NDB\ACFQC\FieldTypes;
 
 class RichText extends Base implements iFieldType{
   public function generate(int $post_id){
-    return $this->post_type->generator->faker->text($this->post_type->generator->faker->numberBetween(5, $this->get_max()));
+    // @TODO: Replace with faker HTMLLorem provider when available
+    return substr($this->post_type->generator->faker->paragraphs(10, true), 0, $this->get_max());
   }
 }

@@ -14,7 +14,7 @@ class Generator{
     $this->faker->addProvider(new \Faker\Provider\DateTime($this->faker));
     $this->faker->addProvider(new \Faker\Provider\Miscellaneous($this->faker));
     $this->faker->addProvider(new \Faker\Provider\Internet($this->faker));
-    $this->faker->addProvider(new \Faker\Provider\en_US\HTMLLorem($this->faker));
+    $this->faker->addProvider(new \Faker\Provider\en_US\Text($this->faker));
     $this->options = $options;
     $this->map_post_types();
   }
