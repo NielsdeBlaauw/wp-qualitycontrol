@@ -22,10 +22,15 @@ class Generator{
 
   protected function map_post_types(){
     $skippable_types = array('attachment');
-    $post_types = get_post_types(array(
+    $built_in_post_types = get_post_types(array(
       'public'=>true,
       '_builtin'=>true,
     ), 'objects');
+    $custom_post_types = get_post_types(array(
+      'public'=>true,
+      '_builtin'=>false,
+    ), 'objects');
+    $post_types = array_merge($built_in_post_types, $custom_post_types);
     foreach($post_types as $post_type){
       if(!in_array($post_type->name, $skippable_types)){
         $this->post_types[] = new PostType($post_type, $this);

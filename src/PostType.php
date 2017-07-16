@@ -33,9 +33,11 @@ class PostType{
     $fieldgroups = acf_get_field_groups(array('post_id'=>$post_id));
     foreach($fieldgroups as $fieldgroup){
       $fields = acf_get_fields_by_id($fieldgroup['ID']);
-      foreach($fields as $fieldData){
-        $field = FieldFactory::create_field($fieldData, $this);
-        $field->direct_insert($post_id);
+      if(!empty($fields)){
+        foreach($fields as $fieldData){
+          $field = FieldFactory::create_field($fieldData, $this);
+          $field->direct_insert($post_id);
+        }
       }
     }
   }
