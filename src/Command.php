@@ -1,9 +1,9 @@
 <?php
 
-namespace NDB\ACFQC;
+namespace NDB\QualityControl;
 
 /**
- * Makes the acf-qc wp-cli command available
+ * Makes the wp-qc wp-cli command available
  */
 class Command extends \WP_CLI_Command{
   public static $warnings = array();

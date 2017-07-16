@@ -1,6 +1,6 @@
 {
-    "name": "niels-de-blaauw/acf-qc",
-    "description": "ACF Quality Control checker",
+    "name": "niels-de-blaauw/wp-qualitycontrol",
+    "description": "Quality Control checker",
     "type": "library",
     "require": {
         "fzaninotto/faker": "^1.6"
@@ -15,7 +15,7 @@
     "autoload":{
       "files": ["init.php"],
       "psr-4": {
-        "NDB\\ACFQC\\":"src/"
+        "NDB\\QualityControl\\":"src/"
       }
     },
     "minimum-stability": "stable"

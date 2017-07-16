@@ -1,9 +1,9 @@
 <?php
 
-namespace NDB\ACFQC;
+namespace NDB\QualityControl;
 
 class Generator{
-  const META_IDENTIFIER_KEY = 'acf-qc-generated';
+  const META_IDENTIFIER_KEY = 'wp-qc-generated';
   const NB_POSTS_PER_TYPE = 10;
 
   public $post_types = array();

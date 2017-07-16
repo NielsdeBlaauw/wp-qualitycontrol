@@ -1,8 +1,8 @@
 <?php
 
-namespace NDB\ACFQC;
+namespace NDB\QualityControl;
 
-use NDB\ACFQC\FieldTypes\Image;
+use NDB\QualityControl\FieldTypes\Image;
 
 class PostType{
   public $post_type = null;

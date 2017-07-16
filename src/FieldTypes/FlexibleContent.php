@@ -1,8 +1,8 @@
 <?php
 
-namespace NDB\ACFQC\FieldTypes;
-use NDB\ACFQC\PostType;
-use NDB\ACFQC\FlexibleContentLayout;
+namespace NDB\QualityControl\FieldTypes;
+use NDB\QualityControl\PostType;
+use NDB\QualityControl\FlexibleContentLayout;
 
 class FlexibleContent extends Base implements iFieldType{
   public $layouts = array();

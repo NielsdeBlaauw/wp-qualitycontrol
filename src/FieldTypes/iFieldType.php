@@ -1,7 +1,7 @@
 <?php
 
-namespace NDB\ACFQC\FieldTypes;
-use NDB\ACFQC\PostType;
+namespace NDB\QualityControl\FieldTypes;
+use NDB\QualityControl\PostType;
 
 interface iFieldType{
   public function __construct(array $field, PostType $post_type);

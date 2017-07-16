@@ -1,7 +1,7 @@
 <?php
 
-namespace NDB\ACFQC\FieldTypes;
-use NDB\ACFQC\PostType;
+namespace NDB\QualityControl\FieldTypes;
+use NDB\QualityControl\PostType;
 
 abstract class Base{
   const MAX_LENGTH_DEFAULT = 3000;

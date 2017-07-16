@@ -1,16 +1,16 @@
 <?php
 
-namespace NDB\ACFQC;
-use NDB\ACFQC\FieldTypes\URL;
-use NDB\ACFQC\FieldTypes\Tab;
-use NDB\ACFQC\FieldTypes\Text;
-use NDB\ACFQC\FieldTypes\RichText;
-use NDB\ACFQC\FieldTypes\Image;
-use NDB\ACFQC\FieldTypes\TextArea;
-use NDB\ACFQC\FieldTypes\TrueFalse;
-use NDB\ACFQC\FieldTypes\PostObject;
-use NDB\ACFQC\FieldTypes\FlexibleContent;
-use NDB\ACFQC\FieldTypes\NotImplementedField;
+namespace NDB\QualityControl;
+use NDB\QualityControl\FieldTypes\URL;
+use NDB\QualityControl\FieldTypes\Tab;
+use NDB\QualityControl\FieldTypes\Text;
+use NDB\QualityControl\FieldTypes\RichText;
+use NDB\QualityControl\FieldTypes\Image;
+use NDB\QualityControl\FieldTypes\TextArea;
+use NDB\QualityControl\FieldTypes\TrueFalse;
+use NDB\QualityControl\FieldTypes\PostObject;
+use NDB\QualityControl\FieldTypes\FlexibleContent;
+use NDB\QualityControl\FieldTypes\NotImplementedField;
 
 class FieldFactory{
   public static function create_field(array $field, PostType $post_type){

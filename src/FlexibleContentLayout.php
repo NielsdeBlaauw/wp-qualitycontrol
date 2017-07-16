@@ -1,7 +1,7 @@
 <?php
 
-namespace NDB\ACFQC;
-use NDB\ACFQC\FieldTypes\FlexibleContent;
+namespace NDB\QualityControl;
+use NDB\QualityControl\FieldTypes\FlexibleContent;
 
 class FlexibleContentLayout{
   public $layout = array();

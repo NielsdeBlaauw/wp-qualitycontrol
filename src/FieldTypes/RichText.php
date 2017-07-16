@@ -1,6 +1,6 @@
 <?php
 
-namespace NDB\ACFQC\FieldTypes;
+namespace NDB\QualityControl\FieldTypes;
 
 class RichText extends Base implements iFieldType{
   public function generate(int $post_id){
