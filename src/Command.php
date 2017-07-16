@@ -1,7 +1,9 @@
 <?php
 
 namespace NDB\QualityControl;
-
+use \GuzzleHttp\Pool;
+use \GuzzleHttp\Client;
+use \GuzzleHttp\Psr7\Request;
 /**
  * Makes the wp-qc wp-cli command available
  */
@@ -20,6 +22,9 @@ class Command extends \WP_CLI_Command{
    * [--skip-tests]
    * : Skip response code tests on created posts
    *
+   * [--concurrent-requests=<integer>]
+   * : Number of concurrent test requests
+   *
    *
    * ## EXAMPLES
    *
@@ -29,8 +34,10 @@ class Command extends \WP_CLI_Command{
     $options = wp_parse_args($args_assoc, array(
       'number-of-posts'=>5,
       'skip-clean-after-run'=>false,
-      'skip-tests'=>false
+      'skip-tests'=>false,
+      'concurrent-requests'=>5,
     ));
+    $this->options = $options;
     \WP_CLI::line('Starting generation of WordPress objects.');
     $this->clean();
     $generator = new Generator($options);
@@ -49,26 +56,48 @@ class Command extends \WP_CLI_Command{
 
   public function test(): bool{
     $posts = $this->get_all_generated_posts();
-    $failed = array();
+    $failed = false;
     $progress = \WP_CLI\Utils\make_progress_bar( 'Testing response codes of generated posts', count($posts) );
-    foreach($posts as $post){
-      $response = wp_remote_get( get_post_permalink( $post ) );
-      if(wp_remote_retrieve_response_code($response) !== 200){
-        $failed[] = $post;
-        self::$warnings[] = sprintf("Post %s produced code %s from url: %s",
-          $post,
-          wp_remote_retrieve_response_code($response),
-          get_post_permalink( $post )
-        );
+    $requests = array();
+
+    $client = new \GuzzleHttp\Client();
+
+    $requests = function ($posts) {
+      foreach($posts as $post){
+        yield new \GuzzleHttp\Psr7\Request('GET', get_post_permalink( $post ));
       }
-      $progress->tick();
-    }
-    if(!empty($failed)){
+    };
+
+    $pool = new \GuzzleHttp\Pool($client, $requests($posts), [
+      'concurrency' => $this->options['concurrent-requests'],
+      'fulfilled' => function ($response, $index) use ($progress, &$failed){
+          // this is delivered each successful response
+          if($response->getStatusCode() !== 200){
+            self::$warnings[] = sprintf("Produced code %s from url: %s",
+              $response->getStatusCode(),
+              $index
+            );
+
+          }
+          $progress->tick();
+      },
+      'rejected' => function ($reason, $index) use ($progress, &$failed){
+        self::$warnings[] = sprintf("Produced code %s from url: %s",
+          $reason->getResponse()->getStatusCode(),
+          $reason->getRequest()->getURI()
+        );
+        $failed = true;
+        $progress->tick();
+      },
+    ]);
+    $promise = $pool->promise();
+    $promise->wait();
+    if($failed){
       \WP_CLI::warning("Some posts failed to produce a 200 code. Generated posts will not be deleted.");
     }else{
       $progress->finish();
     }
-    return !empty($failed);
+    return $failed;
   }
 
   public function clean(){

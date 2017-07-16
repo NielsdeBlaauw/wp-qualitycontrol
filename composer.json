@@ -4,7 +4,7 @@
     "type": "library",
     "require": {
         "fzaninotto/faker": "^1.6",
-        "rmccue/requests": "^1.7"
+        "guzzlehttp/guzzle": "^6.3"
     },
     "license": "MIT",
     "authors": [
