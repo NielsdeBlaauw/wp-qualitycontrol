@@ -8,6 +8,7 @@ use NDB\ACFQC\FieldTypes\RichText;
 use NDB\ACFQC\FieldTypes\Image;
 use NDB\ACFQC\FieldTypes\TextArea;
 use NDB\ACFQC\FieldTypes\TrueFalse;
+use NDB\ACFQC\FieldTypes\PostObject;
 use NDB\ACFQC\FieldTypes\FlexibleContent;
 use NDB\ACFQC\FieldTypes\NotImplementedField;
 
@@ -37,6 +38,9 @@ class FieldFactory{
         break;
       case 'image':
         return new Image($field, $post_type);
+        break;
+      case 'post_object':
+        return new PostObject($field, $post_type);
         break;
       default:
         return new NotImplementedField($field, $post_type);
