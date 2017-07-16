@@ -9,6 +9,10 @@ class PostObject extends Base implements iFieldType{
       'field_key'=>$this->field['key']
     ));
     $chosenItem = array_rand($results['results']);
+    if(isset($results['results'][$chosenItem]['children'])){
+      $chosenChild = array_rand($results['results'][$chosenItem]['children']);
+      return $results['results'][$chosenItem]['children'][$chosenChild]['id'];
+    }
     return $results['results'][$chosenItem]['id'];
   }
 }

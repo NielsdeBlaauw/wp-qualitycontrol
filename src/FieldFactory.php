@@ -4,6 +4,7 @@ namespace NDB\QualityControl;
 use NDB\QualityControl\FieldTypes\URL;
 use NDB\QualityControl\FieldTypes\Tab;
 use NDB\QualityControl\FieldTypes\Text;
+use NDB\QualityControl\FieldTypes\Repeater;
 use NDB\QualityControl\FieldTypes\RichText;
 use NDB\QualityControl\FieldTypes\Image;
 use NDB\QualityControl\FieldTypes\TextArea;
@@ -35,6 +36,9 @@ class FieldFactory{
         break;
       case 'wysiwyg':
         return new RichText($field, $post_type);
+        break;
+      case 'repeater':
+        return new Repeater($field, $post_type);
         break;
       case 'image':
         return new Image($field, $post_type);

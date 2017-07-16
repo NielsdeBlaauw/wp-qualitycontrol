@@ -16,7 +16,9 @@ class Command extends \WP_CLI_Command{
     if(!$testresult){
       $this->clean();
     }
-    \WP_CLI::error_multi_line(self::$warnings);
+    if(!empty(self::$warnings)){
+      \WP_CLI::error_multi_line(self::$warnings);
+    }
     return false;
   }
 
