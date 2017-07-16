@@ -9,7 +9,10 @@ class Generator{
   public $post_types = array();
   public $options = array();
 
+  protected static $nb_posts_per_type = 1;
+
   public function __construct(array $options){
+    self::$nb_posts_per_type = $options['number-of-posts'];
     $this->faker = \Faker\Factory::create();
     $this->faker->addProvider(new \Faker\Provider\Internet($this->faker));
     $this->faker->addProvider(new \Faker\Provider\DateTime($this->faker));
@@ -39,9 +42,9 @@ class Generator{
   }
 
   public function generate(){
-    $progress = \WP_CLI\Utils\make_progress_bar( 'Creating fuzzy posts', count($this->post_types) * self::NB_POSTS_PER_TYPE );
+    $progress = \WP_CLI\Utils\make_progress_bar( 'Creating fuzzy posts', count($this->post_types) * self::$nb_posts_per_type );
     foreach($this->post_types as $post_type){
-      for($i = 0; $i < self::NB_POSTS_PER_TYPE; $i += 1){
+      for($i = 0; $i < self::$nb_posts_per_type; $i += 1){
         $post_type->generate();
         $progress->tick();
       }
