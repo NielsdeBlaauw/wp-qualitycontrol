@@ -3,7 +3,8 @@
     "description": "Quality Control checker",
     "type": "library",
     "require": {
-        "fzaninotto/faker": "^1.6"
+        "fzaninotto/faker": "^1.6",
+        "rmccue/requests": "^1.7"
     },
     "license": "MIT",
     "authors": [
