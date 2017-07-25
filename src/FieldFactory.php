@@ -3,6 +3,7 @@
 namespace NDB\QualityControl;
 use NDB\QualityControl\FieldTypes\URL;
 use NDB\QualityControl\FieldTypes\Tab;
+use NDB\QualityControl\FieldTypes\Message;
 use NDB\QualityControl\FieldTypes\Text;
 use NDB\QualityControl\FieldTypes\Repeater;
 use NDB\QualityControl\FieldTypes\RichText;
@@ -22,6 +23,9 @@ class FieldFactory{
         break;
       case 'tab':
         return new Tab($field, $post_type);
+        break;
+      case 'message':
+        return new Message($field, $post_type);
         break;
       case 'text':
         return new Text($field, $post_type);
