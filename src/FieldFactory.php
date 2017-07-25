@@ -11,6 +11,7 @@ use NDB\QualityControl\FieldTypes\TextArea;
 use NDB\QualityControl\FieldTypes\TrueFalse;
 use NDB\QualityControl\FieldTypes\PostObject;
 use NDB\QualityControl\FieldTypes\FlexibleContent;
+use NDB\QualityControl\FieldTypes\ColorPicker;
 use NDB\QualityControl\FieldTypes\NotImplementedField;
 
 class FieldFactory{
@@ -30,6 +31,9 @@ class FieldFactory{
         break;
       case 'true_false':
         return new TrueFalse($field, $post_type);
+        break;
+      case 'color_picker':
+        return new ColorPicker($field, $post_type);
         break;
       case 'url':
         return new URL($field, $post_type);
