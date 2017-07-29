@@ -22,6 +22,16 @@ use NDB\QualityControl\FieldTypes\NotImplementedField;
 
 class FieldFactory{
   public static function create_field(array $field, PostType $post_type){
+    if($customFieldName = apply_filters('ndb/qualitycontrol/field_name=' . $field['name'], false, $field, $post_type)){
+      return $customFieldName;
+    }
+    if($customFieldKey = apply_filters('ndb/qualitycontrol/field_key=' . $field['key'], false, $field, $post_type)){
+      return $customFieldKey;
+    }
+    if($customFieldType = apply_filters('ndb/qualitycontrol/field_type=' . $field['type'], false, $field, $post_type)){
+      return $customFieldType;
+    }
+
     switch($field['type']){
       case 'flexible_content':
         return new FlexibleContent($field, $post_type);
