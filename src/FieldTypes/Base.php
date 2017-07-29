@@ -25,7 +25,7 @@ abstract class Base{
 
   public function get_max() : int{
     if(empty($this->field['maxlength'])){
-      \WP_CLI::warning(sprintf('No max length set for field %s. Falling back to default %d', $this->field['name'], self::MAX_LENGTH_DEFAULT));
+      \NDB\QualityControl\Command::$warnings[$this->field['key'].'_max_length'] = sprintf('No max length set for field %s. Falling back to default %d', $this->field['name'], self::MAX_LENGTH_DEFAULT);
       return self::MAX_LENGTH_DEFAULT;
     }
     return (int) $this->field['maxlength'];

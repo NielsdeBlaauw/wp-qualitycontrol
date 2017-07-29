@@ -38,13 +38,17 @@ class Repeater extends Base implements iFieldType{
 
   public function get_min() : int{
     if(empty($this->field['min'])){
-      return 1;
+      if($this->field['required']){
+        return 1;
+      }
+      return 0;
     }
     return (int) $this->field['min'];
   }
 
   public function get_max() : int{
     if(empty($this->field['max'])){
+      \NDB\QualityControl\Command::$warnings[$this->field['key'].'_max_length'] = sprintf('No max length set for field %s. Falling back to default %d', $this->field['name'], 50);
       return 50;
     }
     return (int) $this->field['max'];
