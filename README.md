@@ -58,7 +58,7 @@ add_filter('ndb/qualitycontrol/field_type=color_picker', function($returnValue, 
 ## Return value
 
 Returning `false` skips to the next filter. Otherwise you must return
-and object implementing `\NDB\QualityControl\FieldTypes\iFieldType`.
+an object implementing `\NDB\QualityControl\FieldTypes\iFieldType`.
 
 # Notes
 
