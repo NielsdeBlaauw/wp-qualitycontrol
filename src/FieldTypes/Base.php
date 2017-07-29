@@ -9,6 +9,7 @@ abstract class Base{
   public function __construct(array $field, PostType $post_type){
     $this->field = $field;
     $this->post_type = $post_type;
+    $this->faker = $this->post_type->generator->faker;
   }
 
   public function direct_insert(int $post_id){

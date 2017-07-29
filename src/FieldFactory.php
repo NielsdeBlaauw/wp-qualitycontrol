@@ -8,6 +8,7 @@ use NDB\QualityControl\FieldTypes\Text;
 use NDB\QualityControl\FieldTypes\Repeater;
 use NDB\QualityControl\FieldTypes\RichText;
 use NDB\QualityControl\FieldTypes\Image;
+use NDB\QualityControl\FieldTypes\Select;
 use NDB\QualityControl\FieldTypes\TextArea;
 use NDB\QualityControl\FieldTypes\TrueFalse;
 use NDB\QualityControl\FieldTypes\PostObject;
@@ -44,6 +45,9 @@ class FieldFactory{
         break;
       case 'wysiwyg':
         return new RichText($field, $post_type);
+        break;
+      case 'select':
+        return new Select($field, $post_type);
         break;
       case 'repeater':
         return new Repeater($field, $post_type);
