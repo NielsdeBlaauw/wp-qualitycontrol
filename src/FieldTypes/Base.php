@@ -4,7 +4,9 @@ namespace NDB\QualityControl\FieldTypes;
 use NDB\QualityControl\PostType;
 
 abstract class Base{
-  const MAX_LENGTH_DEFAULT = 3000;
+  protected $min_field = 'minlength';
+  protected $max_field = 'maxlength';
+  protected $max_default = 3000;
 
   public function __construct(array $field, PostType $post_type){
     $this->field = $field;
@@ -17,17 +19,20 @@ abstract class Base{
   }
 
   public function get_min() : int{
-    if(empty($this->field['minLength'])){
-      return 1;
+    if(empty($this->field[$this->min_field])){
+      if($this->field['required']){
+        return 1;
+      }
+      return 0;
     }
-    return (int) $this->field['minLength'];
+    return (int) $this->field[$this->min_field];
   }
 
   public function get_max() : int{
-    if(empty($this->field['maxlength'])){
-      \NDB\QualityControl\Command::$warnings[$this->field['key'].'_max_length'] = sprintf('No max length set for field %s. Falling back to default %d', $this->field['name'], self::MAX_LENGTH_DEFAULT);
-      return self::MAX_LENGTH_DEFAULT;
+    if(empty($this->field[$this->max_field])){
+      \NDB\QualityControl\Command::$warnings[$this->field['key'].'_max_length'] = sprintf('No max length set for field %s. Falling back to default %d', $this->field['name'], $this->max_default);
+      return $this->max_default;
     }
-    return (int) $this->field['maxlength'];
+    return (int) $this->field[$this->max_field];
   }
 }
