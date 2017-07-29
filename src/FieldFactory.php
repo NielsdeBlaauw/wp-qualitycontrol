@@ -17,6 +17,7 @@ use NDB\QualityControl\FieldTypes\ColorPicker;
 use NDB\QualityControl\FieldTypes\Radio;
 use NDB\QualityControl\FieldTypes\Number;
 use NDB\QualityControl\FieldTypes\PageLink;
+use NDB\QualityControl\FieldTypes\Relationship;
 use NDB\QualityControl\FieldTypes\NotImplementedField;
 
 class FieldFactory{
@@ -69,6 +70,9 @@ class FieldFactory{
         break;
       case 'page_link':
         return new PageLink($field, $post_type);
+        break;
+      case 'relationship':
+        return new Relationship($field, $post_type);
         break;
       default:
         return new NotImplementedField($field, $post_type);
