@@ -28,7 +28,14 @@ It is possible to overwrite and extend the field processing with custom
 classes. This method can be used to add non-standard ACF field types, or
 modify output generation when the default does not fit the project.
 
-## Filters
+## Tests
+
+You can add tests to the URL validation by using the following filters:
+
+- `ndb/qualitycontrol/test/fulfilled` possibly succeeded.
+- `ndb/qualitycontrol/test/rejected` probably failed.
+
+## Fields
 There are three filters to hijack the field object.
 
 ### 1. Field name

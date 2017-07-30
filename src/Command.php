@@ -43,6 +43,7 @@ class Command extends \WP_CLI_Command{
     $generator = new Generator($options);
     $generator->generate();
     if(!$options['skip-tests']){
+      $this->set_up_test();
       $testresult = $this->test();
     }
     if(!$options['skip-clean-after-run'] && !$testresult){
@@ -52,6 +53,21 @@ class Command extends \WP_CLI_Command{
       \WP_CLI::error_multi_line(self::$warnings);
     }
     return false;
+  }
+
+  protected function set_up_test(){
+    add_filter('ndb/qualitycontrol/test/fulfilled', array($this, 'response_status_code_test'), 10, 2);
+  }
+
+  public function response_status_code_test($failed, $response) : bool{
+    if($response->getStatusCode() !== 200){
+      self::$warnings[$request->getURI() . '_status_code'] = sprintf("Produced code %s from url: %s",
+        $response->getStatusCode(),
+        $response->getHeaders()['Link'][1]
+      );
+      return true;
+    }
+    return $failed;
   }
 
   public function test(): bool{
@@ -71,22 +87,21 @@ class Command extends \WP_CLI_Command{
     $pool = new \GuzzleHttp\Pool($client, $requests($posts), [
       'concurrency' => $this->options['concurrent-requests'],
       'fulfilled' => function ($response, $index) use ($progress, &$failed){
-          // this is delivered each successful response
-          if($response->getStatusCode() !== 200){
-            self::$warnings[] = sprintf("Produced code %s from url: %s",
-              $response->getStatusCode(),
-              $index
-            );
-
+          $instanceFailed = apply_filters('ndb/qualitycontrol/test/fulfilled', false, $response);
+          if($instanceFailed){
+            $failed = true;
           }
           $progress->tick();
       },
       'rejected' => function ($reason, $index) use ($progress, &$failed){
-        self::$warnings[] = sprintf("Produced code %s from url: %s",
+        self::$warnings['test_url_' . $index . '_rejected'] = sprintf("Produced code %s from url: %s",
           $reason->getResponse()->getStatusCode(),
           $reason->getRequest()->getURI()
         );
-        $failed = true;
+        $instanceFailed = apply_filters('ndb/qualitycontrol/test/rejected', true, $reason);
+        if($instanceFailed){
+          $failed = true;
+        }
         $progress->tick();
       },
     ]);
