@@ -13,8 +13,10 @@ class PostType{
 
   public function generate(){
     $image_provider = new Image(array(), $this);
+    $post_title_max_length = apply_filters('ndb/qualitycontrol/post_title', 20);
+    $post_title_max_length = apply_filters('ndb/qualitycontrol/post_title/post_type='.$this->post_type->name, $post_title_max_length);
     $post_id = wp_insert_post(array(
-      'post_title'=>$this->generator->faker->sentence($this->generator->faker->numberBetween(1,200)),
+      'post_title'=>$this->generator->faker->sentence($this->generator->faker->numberBetween(1, $post_title_max_length)),
       'post_type'=>$this->post_type->name,
       'post_status'=>'publish',
       'post_excerpt'=>$this->generator->faker->words($this->generator->faker->numberBetween(0,55), true),
