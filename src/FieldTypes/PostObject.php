@@ -10,6 +10,10 @@ class PostObject extends Base implements iFieldType{
 
   public function generate(int $post_id){
     $field_object = new \acf_field_post_object();
+    return $this->generate_from_field_object($field_object);
+  }
+
+  protected function generate_from_field_object($field_object){
     $results = $field_object->get_ajax_query(array(
       'field_key'=>$this->field['key']
     ));
