@@ -1,20 +1,20 @@
 <?php
 
 namespace NDB\QualityControl\FieldTypes;
-use NDB\QualityControl\PostType;
+use NDB\QualityControl\iContext;
 
 abstract class Base{
   protected $min_field = 'minlength';
   protected $max_field = 'maxlength';
   protected $max_default = 3000;
 
-  public function __construct(array $field, PostType $post_type){
+  public function __construct(array $field, iContext $context){
     $this->field = $field;
-    $this->post_type = $post_type;
-    $this->faker = $this->post_type->generator->faker;
+    $this->context = $context;
+    $this->faker = $this->context->generator->faker;
   }
 
-  public function direct_insert(int $post_id){
+  public function direct_insert($post_id){
     update_field($this->field['key'], $this->generate($post_id), $post_id);
   }
 

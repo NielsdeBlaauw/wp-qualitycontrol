@@ -1,7 +1,7 @@
 <?php
 
 namespace NDB\QualityControl\FieldTypes;
-use NDB\QualityControl\PostType;
+use NDB\QualityControl\iContext;
 use NDB\QualityControl\FieldFactory;
 
 class Repeater extends Base implements iFieldType{
@@ -11,21 +11,21 @@ class Repeater extends Base implements iFieldType{
   protected $max_field = 'max';
   protected $max_default = 50;
 
-  public function __construct(array $field, PostType $post_type){
-    parent::__construct($field, $post_type);
+  public function __construct(array $field, iContext $context){
+    parent::__construct($field, $context);
     $this->parse_sub_fields();
   }
 
   public function parse_sub_fields(){
     $this->sub_fields = array();
     foreach($this->field['sub_fields'] as $sub_field_data){
-      $this->sub_fields[$sub_field_data['name']] = FieldFactory::create_field($sub_field_data, $this->post_type);
+      $this->sub_fields[$sub_field_data['name']] = FieldFactory::create_field($sub_field_data, $this->context);
     }
   }
 
-  public function generate(int $post_id){
+  public function generate($post_id){
     $rows = array();
-    $repeater_rows = $this->post_type->generator->faker->numberBetween($this->get_min(), $this->get_max());
+    $repeater_rows = $this->faker->numberBetween($this->get_min(), $this->get_max());
     for($row_count = 0; $row_count < $repeater_rows; $row_count += 1){
       $row = array();
       foreach($this->sub_fields as $sub_field){
@@ -36,7 +36,7 @@ class Repeater extends Base implements iFieldType{
     return $rows;
   }
 
-  public function direct_insert(int $post_id){
+  public function direct_insert($post_id){
     update_field($this->field['key'], $this->generate($post_id), $post_id);
   }
 }

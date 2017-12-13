@@ -1,10 +1,10 @@
 <?php
 
 namespace NDB\QualityControl\FieldTypes;
-use NDB\QualityControl\PostType;
+use NDB\QualityControl\iContext;
 
 interface iFieldType{
-  public function __construct(array $field, PostType $post_type);
-  public function generate(int $post_id);
-  public function direct_insert(int $post_id);
+  public function __construct(array $field, iContext $context);
+  public function generate($post_id);
+  public function direct_insert($post_id);
 }

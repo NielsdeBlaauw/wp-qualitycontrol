@@ -15,7 +15,7 @@ class FlexibleContentLayout{
   public function parse_fields(){
     $this->fields = array();
     foreach($this->layout['sub_fields'] as $field_data){
-      $this->fields[] = FieldFactory::create_field($field_data, $this->parent->post_type);
+      $this->fields[] = FieldFactory::create_field($field_data, $this->parent->context);
     }
   }
 

@@ -24,80 +24,80 @@ use NDB\QualityControl\FieldTypes\Cloned;
 use NDB\QualityControl\FieldTypes\NotImplementedField;
 
 class FieldFactory{
-  public static function create_field(array $field, PostType $post_type){
-    if($customFieldName = apply_filters('ndb/qualitycontrol/field_name=' . $field['name'], false, $field, $post_type)){
+  public static function create_field(array $field, iContext $context){
+    if($customFieldName = apply_filters('ndb/qualitycontrol/field_name=' . $field['name'], false, $field, $context)){
       return $customFieldName;
     }
-    if($customFieldKey = apply_filters('ndb/qualitycontrol/field_key=' . $field['key'], false, $field, $post_type)){
+    if($customFieldKey = apply_filters('ndb/qualitycontrol/field_key=' . $field['key'], false, $field, $context)){
       return $customFieldKey;
     }
-    if($customFieldType = apply_filters('ndb/qualitycontrol/field_type=' . $field['type'], false, $field, $post_type)){
+    if($customFieldType = apply_filters('ndb/qualitycontrol/field_type=' . $field['type'], false, $field, $context)){
       return $customFieldType;
     }
 
     switch($field['type']){
       case 'flexible_content':
-        return new FlexibleContent($field, $post_type);
+        return new FlexibleContent($field, $context);
         break;
       case 'tab':
-        return new Tab($field, $post_type);
+        return new Tab($field, $context);
         break;
       case 'message':
-        return new Message($field, $post_type);
+        return new Message($field, $context);
         break;
       case 'text':
-        return new Text($field, $post_type);
+        return new Text($field, $context);
         break;
       case 'textarea':
-        return new TextArea($field, $post_type);
+        return new TextArea($field, $context);
         break;
       case 'true_false':
-        return new TrueFalse($field, $post_type);
+        return new TrueFalse($field, $context);
         break;
       case 'color_picker':
-        return new ColorPicker($field, $post_type);
+        return new ColorPicker($field, $context);
         break;
       case 'url':
-        return new URL($field, $post_type);
+        return new URL($field, $context);
         break;
       case 'wysiwyg':
-        return new RichText($field, $post_type);
+        return new RichText($field, $context);
         break;
       case 'select':
-        return new Select($field, $post_type);
+        return new Select($field, $context);
         break;
       case 'repeater':
-        return new Repeater($field, $post_type);
+        return new Repeater($field, $context);
         break;
       case 'image':
-        return new Image($field, $post_type);
+        return new Image($field, $context);
         break;
       case 'post_object':
-        return new PostObject($field, $post_type);
+        return new PostObject($field, $context);
         break;
       case 'radio':
-        return new Radio($field, $post_type);
+        return new Radio($field, $context);
         break;
       case 'oembed':
-        return new OEmbed($field, $post_type);
+        return new OEmbed($field, $context);
         break;
       case 'number':
-        return new Number($field, $post_type);
+        return new Number($field, $context);
         break;
       case 'page_link':
-        return new PageLink($field, $post_type);
+        return new PageLink($field, $context);
         break;
       case 'taxonomy':
-        return new Taxonomy($field, $post_type);
+        return new Taxonomy($field, $context);
         break;
       case 'clone':
-        return new Cloned($field, $post_type);
+        return new Cloned($field, $context);
         break;
       case 'relationship':
-        return new Relationship($field, $post_type);
+        return new Relationship($field, $context);
         break;
       default:
-        return new NotImplementedField($field, $post_type);
+        return new NotImplementedField($field, $context);
         break;
     }
   }

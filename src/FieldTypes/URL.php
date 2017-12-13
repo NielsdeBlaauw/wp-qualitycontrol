@@ -3,7 +3,7 @@
 namespace NDB\QualityControl\FieldTypes;
 
 class URL extends Base implements iFieldType{
-  public function generate(int $post_id){
-    return $this->post_type->generator->faker->url;
+  public function generate($post_id){
+    return $this->faker->url;
   }
 }

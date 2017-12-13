@@ -4,7 +4,7 @@ namespace NDB\QualityControl;
 
 use NDB\QualityControl\FieldTypes\Image;
 
-class PostType{
+class PostType implements iContext{
   public $post_type = null;
   public function __construct(\WP_Post_Type $post_type, Generator $generator){
     $this->generator = $generator;

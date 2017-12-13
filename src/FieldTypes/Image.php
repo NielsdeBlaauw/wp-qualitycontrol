@@ -3,7 +3,7 @@
 namespace NDB\QualityControl\FieldTypes;
 
 class Image extends Base implements iFieldType{
-  public function generate(int $post_id){
+  public function generate($post_id){
     $images = get_posts(array(
       'post_type'=>'attachment',
       'post_status'=>'any',

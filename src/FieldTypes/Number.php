@@ -8,7 +8,7 @@ class Number extends Base implements iFieldType{
   protected $max_field = 'max';
   protected $max_default = 65535;
 
-  public function generate(int $post_id){
+  public function generate($post_id){
     return $this->faker->numberBetween($this->get_min(), $this->get_max());
   }
 }

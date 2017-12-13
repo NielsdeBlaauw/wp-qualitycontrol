@@ -8,7 +8,7 @@ class PostObject extends Base implements iFieldType{
   protected $max_default = 50;
   protected $ids = array();
 
-  public function generate(int $post_id){
+  public function generate($post_id){
     $field_object = new \acf_field_post_object();
     return $this->generate_from_field_object($field_object);
   }
