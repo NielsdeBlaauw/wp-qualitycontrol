@@ -31,6 +31,7 @@ class Command extends \WP_CLI_Command{
    *     wp qualitycontrol generate --prompt
    */
   public function generate(array $args, array $args_assoc) : bool{
+    $this->optimize();
     $options = wp_parse_args($args_assoc, array(
       'number-of-posts'=>5,
       'skip-clean-after-run'=>false,
@@ -52,7 +53,12 @@ class Command extends \WP_CLI_Command{
     if(!empty(self::$warnings)){
       \WP_CLI::error_multi_line(self::$warnings);
     }
+    wp_defer_term_counting(false);
     return false;
+  }
+
+  protected function optimize(){
+    wp_defer_term_counting(true);
   }
 
   protected function set_up_test(){

@@ -14,9 +14,13 @@ class PostObject extends Base implements iFieldType{
   }
 
   protected function generate_from_field_object($field_object){
-    $results = $field_object->get_ajax_query(array(
-      'field_key'=>$this->field['key']
-    ));
+    $results = wp_cache_get('results_'.$this->field['key'], 'wp-qualitycontrol');
+    if(empty($results)){
+      $results = $field_object->get_ajax_query(array(
+        'field_key'=>$this->field['key']
+      ));
+      wp_cache_set('results_'.$this->field['key'], $results, 'wp-qualitycontrol');
+    }
     $ids = array();
     foreach($results['results'] as $result){
       if(isset($result['children'])){
