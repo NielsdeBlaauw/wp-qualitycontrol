@@ -20,6 +20,7 @@ use NDB\QualityControl\FieldTypes\PageLink;
 use NDB\QualityControl\FieldTypes\OEmbed;
 use NDB\QualityControl\FieldTypes\Relationship;
 use NDB\QualityControl\FieldTypes\Taxonomy;
+use NDB\QualityControl\FieldTypes\Cloned;
 use NDB\QualityControl\FieldTypes\NotImplementedField;
 
 class FieldFactory{
@@ -88,6 +89,9 @@ class FieldFactory{
         break;
       case 'taxonomy':
         return new Taxonomy($field, $post_type);
+        break;
+      case 'clone':
+        return new Cloned($field, $post_type);
         break;
       case 'relationship':
         return new Relationship($field, $post_type);
