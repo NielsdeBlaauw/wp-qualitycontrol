@@ -51,5 +51,6 @@ class Generator{
     }
     $progress->finish();
     $options_page = new \NDB\QualityControl\OptionsPage($this);
+    $options_page->generate();
   }
 }
