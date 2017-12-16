@@ -7,20 +7,15 @@ class Generator{
   const NB_POSTS_PER_TYPE = 10;
 
   public $post_types = array();
-  public $options = array();
 
-  protected static $nb_posts_per_type = 1;
-
-  public function __construct(array $options){
-    self::$nb_posts_per_type = $options['number-of-posts'];
+  public function __construct(){
     $this->faker = \Faker\Factory::create();
     $this->faker->addProvider(new \Faker\Provider\Internet($this->faker));
     $this->faker->addProvider(new \Faker\Provider\DateTime($this->faker));
     $this->faker->addProvider(new \Faker\Provider\Miscellaneous($this->faker));
     $this->faker->addProvider(new \Faker\Provider\Internet($this->faker));
     $this->faker->addProvider(new \Faker\Provider\en_US\Text($this->faker));
-    $this->options = $options;
-    $this->config = new \Noodlehaus\Config(array('qualitycontrol.dist.json', '?qualitycontrol.dist.json'));
+    $this->config = new \Noodlehaus\Config(array('?../../../qualitycontrol.dist.json', '?../../../qualitycontrol.dist.json'));
     $this->map_post_types();
   }
 
@@ -43,7 +38,10 @@ class Generator{
   }
 
   public function generate(){
-    $progress = \WP_CLI\Utils\make_progress_bar( 'Creating fuzzy posts', count($this->post_types) * self::$nb_posts_per_type );
+    $nb_posts_total = array_reduce($this->post_types, function($val, $item){
+      return $val += $item->nb_posts;
+    },  0);
+    $progress = \WP_CLI\Utils\make_progress_bar( 'Creating fuzzy posts', $nb_posts_total );
     usort($this->post_types, function($a, $b){
       if ($a->process_order == $b->process_order) {
         return 0;
@@ -51,7 +49,7 @@ class Generator{
       return ($a->process_order < $b->process_order) ? -1 : 1;
     });
     foreach($this->post_types as $post_type){
-      for($i = 0; $i < self::$nb_posts_per_type; $i += 1){
+      for($i = 0; $i < $post_type->nb_posts; $i += 1){
         $post_type->generate();
         $progress->tick();
       }

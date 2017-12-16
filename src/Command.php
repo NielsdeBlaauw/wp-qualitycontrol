@@ -13,9 +13,6 @@ class Command extends \WP_CLI_Command{
   /**
    * Create fuzzy posts and test them.
    *
-   * [--number-of-posts=<integer>]
-   * : Number of posts to generate per post_type
-   *
    * [--skip-clean-after-run]
    * : Deletes the created fuzzy posts after running
    *
@@ -33,7 +30,6 @@ class Command extends \WP_CLI_Command{
   public function generate(array $args, array $args_assoc) : bool{
     $this->optimize();
     $options = wp_parse_args($args_assoc, array(
-      'number-of-posts'=>5,
       'skip-clean-after-run'=>false,
       'skip-tests'=>false,
       'concurrent-requests'=>5,
@@ -41,7 +37,7 @@ class Command extends \WP_CLI_Command{
     $this->options = $options;
     \WP_CLI::line('Starting generation of WordPress objects.');
     $this->clean();
-    $generator = new Generator($options);
+    $generator = new Generator();
     $generator->generate();
     $this->finish_optimize();
     if(!$options['skip-tests']){

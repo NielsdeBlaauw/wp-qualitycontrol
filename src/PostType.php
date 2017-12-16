@@ -11,6 +11,7 @@ class PostType implements iContext{
     $this->generator = $generator;
     $this->post_type = $post_type;
     $this->process_order = $generator->config->get("post_types.{$this->post_type->name}.process_order", 10);
+    $this->nb_posts = $generator->config->get("post_types.{$this->post_type->name}.nb_posts", 5);
   }
 
   public function generate(){

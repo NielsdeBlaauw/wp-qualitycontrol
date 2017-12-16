@@ -13,7 +13,7 @@ class PostObject extends Base implements iFieldType{
     return $this->generate_from_field_object($field_object);
   }
 
-  protected function generate_from_field_object($field_object){
+  protected function generate_from_field_object($field_object){    
     $results = wp_cache_get('results_'.$this->field['key'], 'wp-qualitycontrol');
     if(empty($results)){
       $results = $field_object->get_ajax_query(array(
