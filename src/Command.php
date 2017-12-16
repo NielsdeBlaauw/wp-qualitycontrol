@@ -43,6 +43,7 @@ class Command extends \WP_CLI_Command{
     $this->clean();
     $generator = new Generator($options);
     $generator->generate();
+    $this->finish_optimize();
     if(!$options['skip-tests']){
       $this->set_up_test();
       $testresult = $this->test();
@@ -53,12 +54,19 @@ class Command extends \WP_CLI_Command{
     if(!empty(self::$warnings)){
       \WP_CLI::error_multi_line(self::$warnings);
     }
-    wp_defer_term_counting(false);
+    
     return false;
   }
 
   protected function optimize(){
+    global $wpdb;
+    $wpdb->query('START TRANSACTION');
     wp_defer_term_counting(true);
+  }
+  protected function finish_optimize(){
+    global $wpdb;
+    $wpdb->query('COMMIT');
+    wp_defer_term_counting(false);
   }
 
   protected function set_up_test(){

@@ -15,10 +15,23 @@ class PostType implements iContext{
     $image_provider = new Image(array(), $this);
     $post_title_max_length = apply_filters('ndb/qualitycontrol/post_title', 20);
     $post_title_max_length = apply_filters('ndb/qualitycontrol/post_title/post_type='.$this->post_type->name, $post_title_max_length);
+    $parent = 0;
+    if($this->post_type->hierarchical && round(rand(0,1))){
+      $parentOption = get_posts(array(
+        'orderby'=>'rand',
+        'fields'=>'ids',
+        'post_type'=>$this->post_type->name,
+        'posts_per_page'=>1
+      ));
+      if(!empty($parentOption)){
+        $parent = array_pop($parentOption);
+      }
+    }
     $post_id = wp_insert_post(array(
       'post_title'=>$this->generator->faker->sentence($this->generator->faker->numberBetween(1, $post_title_max_length)),
       'post_type'=>$this->post_type->name,
       'post_status'=>'publish',
+      'post_parent'=>$parent,
       'post_excerpt'=>$this->generator->faker->words($this->generator->faker->numberBetween(0,55), true),
       'post_content'=>$this->generator->faker->paragraphs($this->generator->faker->randomDigit, true),
       'post_date'=>$this->generator->faker->optional->iso8601(),
