@@ -6,9 +6,11 @@ use NDB\QualityControl\FieldTypes\Image;
 
 class PostType implements iContext{
   public $post_type = null;
+  public $process_order = 10;
   public function __construct(\WP_Post_Type $post_type, Generator $generator){
     $this->generator = $generator;
     $this->post_type = $post_type;
+    $this->process_order = $generator->config->get("post_types.{$this->post_type->name}.process_order", 10);
   }
 
   public function generate(){

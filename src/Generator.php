@@ -20,6 +20,7 @@ class Generator{
     $this->faker->addProvider(new \Faker\Provider\Internet($this->faker));
     $this->faker->addProvider(new \Faker\Provider\en_US\Text($this->faker));
     $this->options = $options;
+    $this->config = new \Noodlehaus\Config(array('qualitycontrol.dist.json', '?qualitycontrol.dist.json'));
     $this->map_post_types();
   }
 
@@ -43,6 +44,12 @@ class Generator{
 
   public function generate(){
     $progress = \WP_CLI\Utils\make_progress_bar( 'Creating fuzzy posts', count($this->post_types) * self::$nb_posts_per_type );
+    usort($this->post_types, function($a, $b){
+      if ($a->process_order == $b->process_order) {
+        return 0;
+      }
+      return ($a->process_order < $b->process_order) ? -1 : 1;
+    });
     foreach($this->post_types as $post_type){
       for($i = 0; $i < self::$nb_posts_per_type; $i += 1){
         $post_type->generate();
