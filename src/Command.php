@@ -133,6 +133,13 @@ class Command extends \WP_CLI_Command{
       $progress->tick();
     }
     $progress->finish();
+    $users = $this->get_all_generated_users();
+    $progress = \WP_CLI\Utils\make_progress_bar( 'Cleaning generated users', count($users) );
+    foreach($users as $user){
+      wp_delete_user($user);
+      $progress->tick();
+    }
+    $progress->finish();
   }
 
   protected function get_all_generated_posts(){
@@ -143,6 +150,15 @@ class Command extends \WP_CLI_Command{
       'meta_value'=>'1',
       'fields'=>'ids',
       'posts_per_page'=>-1
+    ));
+    return $posts;
+  }
+
+  protected function get_all_generated_users(){
+    $posts = get_users(array(
+      'meta_key'=>Generator::META_IDENTIFIER_KEY,
+      'meta_value'=>'1',
+      'fields'=>'ids',
     ));
     return $posts;
   }

@@ -5,6 +5,8 @@ namespace NDB\QualityControl;
 class OptionsPage implements iContext{
     public function __construct(Generator $generator){
         $this->generator = $generator;
+        $this->process_order = $generator->config->get("options_page.process_order", 900);
+        $this->nb_posts = 1;
         $options_pages = acf_get_options_pages();
         $this->field_groups = array();
         if(!empty($options_pages)){
