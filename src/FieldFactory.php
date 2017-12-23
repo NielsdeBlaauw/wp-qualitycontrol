@@ -9,6 +9,7 @@ use NDB\QualityControl\FieldTypes\Repeater;
 use NDB\QualityControl\FieldTypes\RichText;
 use NDB\QualityControl\FieldTypes\Image;
 use NDB\QualityControl\FieldTypes\Select;
+use NDB\QualityControl\FieldTypes\Group;
 use NDB\QualityControl\FieldTypes\TextArea;
 use NDB\QualityControl\FieldTypes\TrueFalse;
 use NDB\QualityControl\FieldTypes\PostObject;
@@ -53,6 +54,9 @@ class FieldFactory{
         break;
       case 'text':
         return new Text($field, $context);
+        break;
+      case 'group':
+        return new Group($field, $context);
         break;
       case 'textarea':
         return new TextArea($field, $context);
