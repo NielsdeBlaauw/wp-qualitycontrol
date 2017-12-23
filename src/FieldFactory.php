@@ -22,6 +22,7 @@ use NDB\QualityControl\FieldTypes\Relationship;
 use NDB\QualityControl\FieldTypes\Taxonomy;
 use NDB\QualityControl\FieldTypes\Cloned;
 use NDB\QualityControl\FieldTypes\GoogleMap;
+use NDB\QualityControl\FieldTypes\TimePicker;
 use NDB\QualityControl\FieldTypes\NotImplementedField;
 
 class FieldFactory{
@@ -81,6 +82,9 @@ class FieldFactory{
         break;
       case 'radio':
         return new Radio($field, $context);
+        break;
+      case 'time_picker':
+        return new TimePicker($field, $context);
         break;
       case 'oembed':
         return new OEmbed($field, $context);
