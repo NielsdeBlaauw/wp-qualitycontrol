@@ -21,6 +21,7 @@ use NDB\QualityControl\FieldTypes\OEmbed;
 use NDB\QualityControl\FieldTypes\Relationship;
 use NDB\QualityControl\FieldTypes\Taxonomy;
 use NDB\QualityControl\FieldTypes\Cloned;
+use NDB\QualityControl\FieldTypes\GoogleMap;
 use NDB\QualityControl\FieldTypes\NotImplementedField;
 
 class FieldFactory{
@@ -44,6 +45,9 @@ class FieldFactory{
         break;
       case 'message':
         return new Message($field, $context);
+        break;
+      case 'google_map':
+        return new GoogleMap($field, $context);
         break;
       case 'text':
         return new Text($field, $context);

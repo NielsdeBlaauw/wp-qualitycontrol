@@ -12,6 +12,7 @@ class Generator{
     $this->faker = \Faker\Factory::create();
     $this->faker->addProvider(new \Faker\Provider\Internet($this->faker));
     $this->faker->addProvider(new \Faker\Provider\DateTime($this->faker));
+    $this->faker->addProvider(new \Faker\Provider\en_US\Address($this->faker));
     $this->faker->addProvider(new \Faker\Provider\Miscellaneous($this->faker));
     $this->faker->addProvider(new \Faker\Provider\Internet($this->faker));
     $this->faker->addProvider(new \Faker\Provider\en_US\Text($this->faker));

@@ -6,10 +6,13 @@ class OptionsPage implements iContext{
     public function __construct(Generator $generator){
         $this->generator = $generator;
         $options_pages = acf_get_options_pages();
-        foreach($options_pages as $option_page){
-            $this->field_groups = acf_get_field_groups(array(
-                'options_page' => $option_page['menu_slug']
-            ));
+        $this->field_groups = array();
+        if(!empty($options_pages)){
+            foreach($options_pages as $option_page){
+                $this->field_groups = acf_get_field_groups(array(
+                    'options_page' => $option_page['menu_slug']
+                ));
+            }
         }
     }
 

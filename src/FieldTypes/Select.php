@@ -9,7 +9,7 @@ class Select extends Base implements iFieldType{
   }
 
   public function get_max() : int{
-    $max_to_select = 1;
+    $max_to_select = min(1, count($this->field['choices']));
     if($this->field['multiple']){
       $max_to_select = count($this->field['choices']);
     }
