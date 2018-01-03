@@ -20,7 +20,7 @@ class Taxonomy implements iContext{
 
   public function generate(){
     $parent = 0;
-    if($this->taxonomy->hierarchical){
+    if($this->taxonomy->hierarchical && round(rand(0,1))){
       $terms = get_terms( array(
           'taxonomy' => $this->taxonomy->name,
           'hide_empty' => false,
