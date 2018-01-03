@@ -18,6 +18,10 @@ class OptionsPage implements iContext{
         }
     }
 
+    public function get_name() : string{
+        return 'Options page';
+    }
+
     public function generate(){
         foreach($this->field_groups as $field_group){
             $fields = acf_get_fields_by_id($field_group['ID']);

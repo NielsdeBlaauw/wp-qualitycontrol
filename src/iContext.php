@@ -2,4 +2,6 @@
 
 namespace NDB\QualityControl;
 
-interface iContext{}
+interface iContext{
+    public function get_name() : string;
+}

@@ -14,6 +14,10 @@ class PostType implements iContext{
     $this->nb_posts = $generator->config->get("post_types.{$this->post_type->name}.nb_posts", 5);
   }
 
+  public function get_name() : string{
+    return 'Post type ' . $this->post_type->name;
+  }
+
   public function generate(){
     $image_provider = new Image(array(), $this);
     $post_title_max_length = apply_filters('ndb/qualitycontrol/post_title', 20);

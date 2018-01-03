@@ -54,7 +54,6 @@ class Generator{
     $nb_posts_total = array_reduce($this->generators, function($val, $item){
       return $val += $item->nb_posts;
     },  0);
-    $progress = \WP_CLI\Utils\make_progress_bar( 'Creating fuzzy posts', $nb_posts_total );
     usort($this->generators, function($a, $b){
       if ($a->process_order == $b->process_order) {
         return 0;
@@ -62,12 +61,12 @@ class Generator{
       return ($a->process_order < $b->process_order) ? -1 : 1;
     });
     foreach($this->generators as $generator){
+      $progress = \WP_CLI\Utils\make_progress_bar( "Creating items for {$generator->get_name()}", $generator->nb_posts );
       for($i = 0; $i < $generator->nb_posts; $i += 1){
         $generator->generate();
         $progress->tick();
       }
+      $progress->finish();
     }
-    $progress->finish();
-    
   }
 }

@@ -14,8 +14,11 @@ class UserRole implements iContext{
     $this->nb_posts = $generator->config->get("user_roles.{$this->role->name}.nb_posts", 5);
   }
 
+  public function get_name() : string{
+    return 'User role ' . $this->role->name;
+  }
+
   public function generate(){
-    $image_provider = new Image(array(), $this);
     $parent = 0;
     $user_id = wp_insert_user(array(
       'role'=>$this->role->name,
@@ -29,7 +32,6 @@ class UserRole implements iContext{
     ));
     update_user_meta($user_id, Generator::META_IDENTIFIER_KEY, '1');
 
-    //set_post_thumbnail($user_id, $image_provider->generate($user_id));
     $this->fill_acf_fields($user_id);
   }
 
