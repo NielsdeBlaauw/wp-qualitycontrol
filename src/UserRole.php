@@ -47,4 +47,18 @@ class UserRole implements iContext{
       }
     }
   }
+
+  public static function clean(){
+    $users = get_users(array(
+      'meta_key'=>Generator::META_IDENTIFIER_KEY,
+      'meta_value'=>'1',
+      'fields'=>'ids',
+    ));
+    $progress = \WP_CLI\Utils\make_progress_bar( 'Cleaning generated users', count($users) );
+    foreach($users as $user){
+      wp_delete_user($user);
+      $progress->tick();
+    }
+    $progress->finish();
+  }
 }

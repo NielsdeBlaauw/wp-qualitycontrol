@@ -126,40 +126,9 @@ class Command extends \WP_CLI_Command{
   }
 
   public function clean(){
-    $posts = $this->get_all_generated_posts();
-    $progress = \WP_CLI\Utils\make_progress_bar( 'Cleaning generated posts', count($posts) );
-    foreach($posts as $post_id){
-      wp_delete_post($post_id, true);
-      $progress->tick();
-    }
-    $progress->finish();
-    $users = $this->get_all_generated_users();
-    $progress = \WP_CLI\Utils\make_progress_bar( 'Cleaning generated users', count($users) );
-    foreach($users as $user){
-      wp_delete_user($user);
-      $progress->tick();
-    }
-    $progress->finish();
-  }
-
-  protected function get_all_generated_posts(){
-    $posts = get_posts(array(
-      'post_type'=>'any',
-      'post_status'=>'any',
-      'meta_key'=>Generator::META_IDENTIFIER_KEY,
-      'meta_value'=>'1',
-      'fields'=>'ids',
-      'posts_per_page'=>-1
-    ));
-    return $posts;
-  }
-
-  protected function get_all_generated_users(){
-    $posts = get_users(array(
-      'meta_key'=>Generator::META_IDENTIFIER_KEY,
-      'meta_value'=>'1',
-      'fields'=>'ids',
-    ));
-    return $posts;
+    PostType::clean();
+    UserRole::clean();
+    Taxonomy::clean();
+    OptionsPage::clean();
   }
 }

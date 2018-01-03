@@ -6,11 +6,11 @@ use NDB\QualityControl\FieldTypes\Image;
 
 class PostType implements iContext{
   public $post_type = null;
-  public $process_order = 200;
+  public $process_order = 300;
   public function __construct(\WP_Post_Type $post_type, Generator $generator){
     $this->generator = $generator;
     $this->post_type = $post_type;
-    $this->process_order = $generator->config->get("post_types.{$this->post_type->name}.process_order", 200);
+    $this->process_order = $generator->config->get("post_types.{$this->post_type->name}.process_order", 300);
     $this->nb_posts = $generator->config->get("post_types.{$this->post_type->name}.nb_posts", 5);
   }
 
@@ -62,5 +62,22 @@ class PostType implements iContext{
         }
       }
     }
+  }
+
+  public static function clean(){
+    $posts = get_posts(array(
+      'post_type'=>'any',
+      'post_status'=>'any',
+      'meta_key'=>Generator::META_IDENTIFIER_KEY,
+      'meta_value'=>'1',
+      'fields'=>'ids',
+      'posts_per_page'=>-1
+    ));
+    $progress = \WP_CLI\Utils\make_progress_bar( 'Cleaning generated posts', count($posts) );
+    foreach($posts as $post_id){
+      wp_delete_post($post_id, true);
+      $progress->tick();
+    }
+    $progress->finish();
   }
 }

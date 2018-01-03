@@ -20,6 +20,7 @@ class Generator{
     $this->config = new \Noodlehaus\Config(array('?../../../qualitycontrol.dist.json', '?../../../qualitycontrol.dist.json'));
     $this->map_post_types();
     $this->map_user_roles();
+    $this->map_taxonomies();
   }
 
   protected function map_post_types(){
@@ -47,10 +48,17 @@ class Generator{
     }
   }
 
+  protected function map_taxonomies(){
+    $taxonomies = get_taxonomies(array(), 'objects');
+    foreach($taxonomies as $taxonomy){
+      $this->taxonomies[] = new Taxonomy($taxonomy, $this);
+    }
+  }
+
   public function generate(){
     $options_page = new \NDB\QualityControl\OptionsPage($this);
     $options_page->generate();
-    $this->generators = array_merge($this->user_roles, $this->post_types, array($options_page));
+    $this->generators = array_merge($this->user_roles, $this->taxonomies, $this->post_types, array($options_page));
     $nb_posts_total = array_reduce($this->generators, function($val, $item){
       return $val += $item->nb_posts;
     },  0);

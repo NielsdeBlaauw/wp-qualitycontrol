@@ -33,4 +33,6 @@ class OptionsPage implements iContext{
             }
         }
     }
+
+    public static function clean(){} // Not implemented on purpose
 }
