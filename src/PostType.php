@@ -20,8 +20,7 @@ class PostType implements iContext{
 
   public function generate(){
     $image_provider = new Image(array(), $this);
-    $post_title_max_length = apply_filters('ndb/qualitycontrol/post_title', 20);
-    $post_title_max_length = apply_filters('ndb/qualitycontrol/post_title/post_type='.$this->post_type->name, $post_title_max_length);
+    $post_title_max_length = $this->generator->config->get("post_types.{$this->post_type->name}.title_length", 20);
     $parent = 0;
     if($this->post_type->hierarchical && round(rand(0,1))){
       $parentOption = get_posts(array(
