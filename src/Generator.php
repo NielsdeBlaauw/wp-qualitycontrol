@@ -17,10 +17,30 @@ class Generator{
     $this->faker->addProvider(new \Faker\Provider\Internet($this->faker));
     $this->faker->addProvider(new \Faker\Provider\en_US\Person($this->faker));
     $this->faker->addProvider(new \Faker\Provider\en_US\Text($this->faker));
-    $this->config = new \Noodlehaus\Config(array('?' . realpath(__DIR__ . '/../../../../qualitycontrol.dist.json'), '?' . realpath(__DIR__ . '/../../../../qualitycontrol.json')));
+    $pre_config = new \Noodlehaus\Config(array('?' . realpath(__DIR__ . '/../../../../qualitycontrol.dist.json')));
+    $config_files = array_merge(
+      array('?' . realpath(__DIR__ . '/../../../../qualitycontrol.dist.json')), 
+      $this->parse_config_files($pre_config->get('settings.files', array())),
+      array('?' . realpath(__DIR__ . '/../../../../qualitycontrol.json'))
+    );
+
+    $this->config = new \Noodlehaus\Config($config_files);
     $this->map_post_types();
     $this->map_user_roles();
     $this->map_taxonomies();
+  }
+
+  protected function parse_config_files($paths){
+    $real_paths = array();
+    foreach($paths as $path){
+      $real_path = realpath(__DIR__ . '/../../../../' . $path);
+      if(empty($real_path)){
+        \WP_CLI::warning('Config file not found: ' . $path);
+      }else{
+        $real_paths[] = $real_path;
+      }
+    }
+    return $real_paths;
   }
 
   protected function map_post_types(){
