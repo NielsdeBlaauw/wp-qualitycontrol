@@ -17,7 +17,7 @@ class Generator{
     $this->faker->addProvider(new \Faker\Provider\Internet($this->faker));
     $this->faker->addProvider(new \Faker\Provider\en_US\Person($this->faker));
     $this->faker->addProvider(new \Faker\Provider\en_US\Text($this->faker));
-    $this->config = new \Noodlehaus\Config(array('?../../../qualitycontrol.dist.json', '?../../../qualitycontrol.dist.json'));
+    $this->config = new \Noodlehaus\Config(array('?' . realpath(__DIR__ . '/../../../../qualitycontrol.dist.json'), '?' . realpath(__DIR__ . '/../../../../qualitycontrol.json')));
     $this->map_post_types();
     $this->map_user_roles();
     $this->map_taxonomies();
