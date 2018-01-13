@@ -13,40 +13,16 @@ class Command extends \WP_CLI_Command{
   /**
    * Create fuzzy posts and test them.
    *
-   * [--skip-clean-after-run]
-   * : Deletes the created fuzzy posts after running
-   *
-   * [--skip-tests]
-   * : Skip response code tests on created posts
-   *
-   * [--concurrent-requests=<integer>]
-   * : Number of concurrent test requests
-   *
-   *
    * ## EXAMPLES
    *
-   *     wp qualitycontrol generate --prompt
+   *     wp qualitycontrol generate
    */
   public function generate(array $args, array $args_assoc) : bool{
     $this->optimize();
-    $options = wp_parse_args($args_assoc, array(
-      'skip-clean-after-run'=>false,
-      'skip-tests'=>false,
-      'concurrent-requests'=>5,
-    ));
-    $this->options = $options;
     \WP_CLI::line('Starting generation of WordPress objects.');
-    $this->clean();
     $generator = new Generator();
     $generator->generate();
     $this->finish_optimize();
-    if(!$options['skip-tests']){
-      $this->set_up_test();
-      $testresult = $this->test();
-    }
-    if(!$options['skip-clean-after-run'] && !$testresult){
-      $this->clean();
-    }
     if(!empty(self::$warnings)){
       \WP_CLI::error_multi_line(self::$warnings);
     }
@@ -65,11 +41,7 @@ class Command extends \WP_CLI_Command{
     wp_defer_term_counting(false);
   }
 
-  protected function set_up_test(){
-    add_filter('ndb/qualitycontrol/test/fulfilled', array($this, 'response_status_code_test'), 10, 2);
-  }
-
-  public function response_status_code_test($failed, $response) : bool{
+  protected function response_status_code_test($failed, $response) : bool{
     if($response->getStatusCode() !== 200){
       self::$warnings[$request->getURI() . '_status_code'] = sprintf("Produced code %s from url: %s",
         $response->getStatusCode(),
@@ -81,7 +53,14 @@ class Command extends \WP_CLI_Command{
   }
 
   public function test(): bool{
-    $posts = $this->get_all_generated_posts();
+    $posts = get_posts(array(
+      'post_type'=>'any',
+      'post_status'=>'any',
+      'meta_key'=>Generator::META_IDENTIFIER_KEY,
+      'meta_value'=>'1',
+      'fields'=>'ids',
+      'posts_per_page'=>-1
+    ));    
     $failed = false;
     $progress = \WP_CLI\Utils\make_progress_bar( 'Testing response codes of generated posts', count($posts) );
     $requests = array();
@@ -95,9 +74,9 @@ class Command extends \WP_CLI_Command{
     };
 
     $pool = new \GuzzleHttp\Pool($client, $requests($posts), [
-      'concurrency' => $this->options['concurrent-requests'],
+      'concurrency' => 5,
       'fulfilled' => function ($response, $index) use ($progress, &$failed){
-          $instanceFailed = apply_filters('ndb/qualitycontrol/test/fulfilled', false, $response);
+          $instanceFailed = apply_filters('ndb/qualitycontrol/test/fulfilled', $this->response_status_code_test(false, $response), $response);
           if($instanceFailed){
             $failed = true;
           }

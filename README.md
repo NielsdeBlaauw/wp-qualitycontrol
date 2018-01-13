@@ -19,8 +19,7 @@ The tool will load automatically.
 
 Inside WordPress install, use the generate command:
 
-`wp qualitycontrol generate --prompt`
-
+`wp qualitycontrol generate`
 
 # Customisation
 
