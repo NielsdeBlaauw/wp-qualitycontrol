@@ -14,8 +14,8 @@ abstract class Base{
     $this->faker = $this->context->generator->faker;
   }
 
-  public function direct_insert($post_id){
-    update_field($this->field['key'], $this->generate($post_id), $post_id);
+  public function direct_insert($id){
+    update_field($this->field['key'], $this->generate($id), $id);
   }
 
   public function get_min() : int{
@@ -26,6 +26,10 @@ abstract class Base{
       return 0;
     }
     return (int) $this->field[$this->min_field];
+  }
+
+  public function custom_meta_insert(int $id){
+    $this->context->insert_meta($id, $this->field['key'], $this->generate($id));
   }
 
   public function get_max() : int{

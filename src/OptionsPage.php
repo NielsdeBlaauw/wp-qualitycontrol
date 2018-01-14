@@ -22,6 +22,20 @@ class OptionsPage implements iContext{
         return 'Options page';
     }
 
+    public function insert_meta(int $id, $key, $value){
+        update_site_option($key, $value);
+    }
+
+    protected function fill_custom_fields(){
+        $fields = $this->generator->config->get("options_page.fields", array());
+        if(!empty($fields)){
+            foreach($fields as $fieldData){
+                $field = FieldFactory::create_field($fieldData, $this);
+                $field->custom_meta_insert(0);
+            }
+        }
+    }
+
     public function generate(){
         foreach($this->field_groups as $field_group){
             $fields = acf_get_fields_by_id($field_group['ID']);
@@ -32,6 +46,7 @@ class OptionsPage implements iContext{
                 }
             }
         }
+        $this->fill_custom_fields();
     }
 
     public static function clean(){} // Not implemented on purpose

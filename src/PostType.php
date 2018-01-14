@@ -7,6 +7,7 @@ use NDB\QualityControl\FieldTypes\Image;
 class PostType implements iContext{
   public $post_type = null;
   public $process_order = 300;
+
   public function __construct(\WP_Post_Type $post_type, Generator $generator){
     $this->generator = $generator;
     $this->post_type = $post_type;
@@ -48,6 +49,21 @@ class PostType implements iContext{
     ));
     set_post_thumbnail($post_id, $image_provider->generate($post_id));
     $this->fill_acf_fields($post_id);
+    $this->fill_custom_fields($post_id);
+  }
+
+  protected function fill_custom_fields($post_id){
+    $fields = $this->generator->config->get("post_types.{$this->post_type->name}.fields", array());
+    if(!empty($fields)){
+      foreach($fields as $fieldData){
+        $field = FieldFactory::create_field($fieldData, $this);
+        $field->custom_meta_insert($post_id);
+      }
+    }
+  }
+
+  public function insert_meta(int $id, $key, $value){
+    update_post_meta($id, $key, $value);
   }
 
   protected function fill_acf_fields(int $post_id){

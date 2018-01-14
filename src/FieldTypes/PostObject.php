@@ -36,6 +36,10 @@ class PostObject extends Base implements iFieldType{
     return $this->faker->randomElements($ids, $this->faker->numberBetween($this->get_min(), $this->get_max()));
   }
 
+  public function custom_meta_insert(int $id){
+    \NDB\QualityControl\Command::$warnings[$this->field['key'].'_custom_meta_unsupported'] = sprintf('Custom field %s has unsupported type PostObject.', $this->field['key']);
+  }
+
   public function get_max() : int{
     if(!$this->field['multiple']){
       return 1;

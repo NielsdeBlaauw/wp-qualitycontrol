@@ -33,6 +33,7 @@ class UserRole implements iContext{
     update_user_meta($user_id, Generator::META_IDENTIFIER_KEY, '1');
 
     $this->fill_acf_fields($user_id);
+    $this->fill_custom_fields($user_id);
   }
 
   protected function fill_acf_fields($user_id){
@@ -46,6 +47,20 @@ class UserRole implements iContext{
         }
       }
     }
+  }
+
+  protected function fill_custom_fields($user_id){
+    $fields = $this->generator->config->get("user_roles.{$this->role->name}.fields", array());
+    if(!empty($fields)){
+      foreach($fields as $fieldData){
+        $field = FieldFactory::create_field($fieldData, $this);
+        $field->custom_meta_insert($user_id);
+      }
+    }
+  }
+
+  public function insert_meta(int $id, $key, $value){
+    update_user_meta($id, $key, $value);
   }
 
   public static function clean(){

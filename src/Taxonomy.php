@@ -38,6 +38,7 @@ class Taxonomy implements iContext{
     update_term_meta($term_id, Generator::META_IDENTIFIER_KEY, '1');
 
     $this->fill_acf_fields($term_id);
+    $this->fill_custom_fields($term_id);
   }
 
   public static function clean(){
@@ -52,6 +53,20 @@ class Taxonomy implements iContext{
       $progress->tick();
     }
     $progress->finish();
+  }
+
+  public function insert_meta(int $id, $key, $value){
+    update_term_meta($id, $key, $value);
+  }
+
+  protected function fill_custom_fields($term_id){
+    $fields = $this->generator->config->get("taxonomies.{$this->taxonomy->name}.fields", array());
+    if(!empty($fields)){
+      foreach($fields as $fieldData){
+        $field = FieldFactory::create_field($fieldData, $this);
+        $field->custom_meta_insert($term_id);
+      }
+    }
   }
 
   protected function fill_acf_fields($term_id){

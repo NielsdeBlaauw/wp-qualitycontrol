@@ -23,6 +23,10 @@ class Cloned extends Base implements iFieldType{
     }
   }
 
+  public function custom_meta_insert(int $id){
+    \NDB\QualityControl\Command::$warnings[$this->field['key'].'_custom_meta_unsupported'] = sprintf('Custom field %s has unsupported type Cloned.', $this->field['key']);
+  }
+
   public function generate($post_id){}
 
   public function direct_insert($post_id){

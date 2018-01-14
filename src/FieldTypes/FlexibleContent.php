@@ -23,6 +23,10 @@ class FlexibleContent extends Base implements iFieldType{
     }
   }
 
+  public function custom_meta_insert(int $id){
+    \NDB\QualityControl\Command::$warnings[$this->field['key'].'_custom_meta_unsupported'] = sprintf('Custom field %s has unsupported type Flexible Content.', $this->field['key']);
+  }
+
   public function generate($post_id){
     $layouts = array();
     $layout_rows = $this->faker->numberBetween($this->get_min(), $this->get_max());
