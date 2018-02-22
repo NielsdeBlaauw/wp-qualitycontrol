@@ -30,7 +30,7 @@ class Taxonomy implements iContext{
         $parent = $parent->term_id;
       }
     }
-    $term_id = wp_insert_term($this->generator->faker->text(), $this->taxonomy->name, array(
+    $term_id = wp_insert_term($this->generator->faker->text($this->generator->config->get("taxonomies.{$this->taxonomy->name}.title_length", 50)), $this->taxonomy->name, array(
       'description'=>$this->generator->faker->paragraphs(2, true),
       'parent'=>$parent
     ));
