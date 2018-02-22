@@ -28,7 +28,7 @@ class UserRole implements iContext{
       'user_email'=>$this->generator->faker->safeEmail,
       'description'=>$this->generator->faker->paragraphs(2, true),
       'user_url'=>$this->generator->faker->url,
-
+      'user_pass'=>"password"
     ));
     update_user_meta($user_id, Generator::META_IDENTIFIER_KEY, '1');
 
