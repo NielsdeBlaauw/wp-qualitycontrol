@@ -41,7 +41,7 @@ class PostObject extends Base implements iFieldType{
   }
 
   public function get_max() : int{
-    if(!$this->field['multiple']){
+    if(!isset($this->field['multiple']) || !$this->field['multiple']){
       return 1;
     }
     $max_to_select = parent::get_max();
