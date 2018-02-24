@@ -4,6 +4,7 @@ namespace NDB\QualityControl;
 use NDB\QualityControl\FieldTypes\URL;
 use NDB\QualityControl\FieldTypes\Tab;
 use NDB\QualityControl\FieldTypes\Message;
+use NDB\QualityControl\FieldTypes\Link;
 use NDB\QualityControl\FieldTypes\Text;
 use NDB\QualityControl\FieldTypes\Repeater;
 use NDB\QualityControl\FieldTypes\RichText;
@@ -78,6 +79,9 @@ class FieldFactory{
         break;
       case 'repeater':
         return new Repeater($field, $context);
+        break;
+      case 'link':
+        return new Link($field, $context);
         break;
       case 'image':
         return new Image($field, $context);
