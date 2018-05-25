@@ -33,7 +33,11 @@ class PostObject extends Base implements iFieldType{
       }
     }
     $this->ids = $ids;
-    return $this->faker->randomElements($ids, $this->faker->numberBetween($this->get_min(), $this->get_max()));
+    $elements = $this->faker->randomElements($ids, $this->faker->numberBetween($this->get_min(), $this->get_max()));
+    if(count($elements) > 1){
+      return $elements;
+    }
+    return $elements[0];
   }
 
   public function custom_meta_insert(int $id){
