@@ -22,18 +22,25 @@ class PostObject extends Base implements iFieldType{
       wp_cache_set('results_'.$this->field['key'], $results, 'wp-qualitycontrol');
     }
     $ids = array();
-    foreach($results['results'] as $result){
-      if(isset($result['children'])){
-        foreach($result['children'] as $child){
-          $ids[] = $child['id'];
+    if(is_array($results['results'])){
+      foreach($results['results'] as $result){
+        if(isset($result['children'])){
+          foreach($result['children'] as $child){
+            $ids[] = $child['id'];
+          }
         }
-      }
-      if(isset($result['id'])){
-        $ids[] = $result['id'];
+        if(isset($result['id'])){
+          $ids[] = $result['id'];
+        }
       }
     }
     $this->ids = $ids;
-    $elements = $this->faker->randomElements($ids, $this->faker->numberBetween($this->get_min(), $this->get_max()));
+    $max = $this->get_max();
+    if($max == 0){
+      \NDB\QualityControl\Command::$warnings[$this->field['key'].'_no_relation_possible'] = sprintf('Custom field %s depends on a different content-type, but could not find correct results. You probably need to edit the process_order for this content-type.', $this->field['key']);
+      return array();
+    }
+    $elements = $this->faker->randomElements($ids, $this->faker->numberBetween($this->get_min(), $max));
     if(count($elements) > 1){
       return $elements;
     }
@@ -45,10 +52,10 @@ class PostObject extends Base implements iFieldType{
   }
 
   public function get_max() : int{
-    if(!isset($this->field['multiple']) || !$this->field['multiple']){
-      return 1;
+    $max_to_select = 1;
+    if(isset($this->field['multiple']) && $this->field['multiple']){
+      $max_to_select = parent::get_max();
     }
-    $max_to_select = parent::get_max();
     return min(count($this->ids), $max_to_select);
   }
 }
