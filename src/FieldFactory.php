@@ -14,13 +14,16 @@ class FieldFactory{
   );
 
   public static function create_field(array $field, iContext $context): iFieldType{
-    if($customFieldName = apply_filters('ndb/qualitycontrol/field_name=' . $field['name'], false, $field, $context)){
+    $customFieldName = apply_filters('ndb/qualitycontrol/field_name=' . $field['name'], false, $field, $context);
+    if($customFieldName){
       return $customFieldName;
     }
-    if($customFieldKey = apply_filters('ndb/qualitycontrol/field_key=' . $field['key'], false, $field, $context)){
+    $customFieldKey = apply_filters('ndb/qualitycontrol/field_key=' . $field['key'], false, $field, $context);
+    if($customFieldKey){
       return $customFieldKey;
     }
-    if($customFieldType = apply_filters('ndb/qualitycontrol/field_type=' . $field['type'], false, $field, $context)){
+    $customFieldType = apply_filters('ndb/qualitycontrol/field_type=' . $field['type'], false, $field, $context);
+    if($customFieldType){
       return $customFieldType;
     }
     if(isset(self::$fieldMapping[$field['type']]) && class_exists(self::$fieldMapping[$field['type']])){
