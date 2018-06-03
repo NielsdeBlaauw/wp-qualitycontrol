@@ -1,3 +1,5 @@
+[![CodeFactor](https://www.codefactor.io/repository/github/nielsdeblaauw/wp-qualitycontrol/badge/master)](https://www.codefactor.io/repository/github/nielsdeblaauw/wp-qualitycontrol/overview/master)
+
 # WP Qualitycontrol
 
 With complex themes it is often impossible to try every single combination
