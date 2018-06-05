@@ -30,6 +30,7 @@ class OptionsPage implements iContext{
         $fields = $this->generator->config->get("options_page.fields", array());
         if(!empty($fields)){
             foreach($fields as $fieldData){
+                $fieldDefinition = new \NDB\QualityControl\FieldDefinitions\Custom($fieldData);
                 $field = FieldFactory::create_field($fieldData, $this);
                 $field->custom_meta_insert(0);
             }
@@ -41,7 +42,8 @@ class OptionsPage implements iContext{
             $fields = acf_get_fields_by_id($field_group['ID']);
             if(!empty($fields)){
                 foreach($fields as $fieldData){
-                    $field = FieldFactory::create_field($fieldData, $this);
+                    $fieldDefinition = new \NDB\QualityControl\FieldDefinitions\ACF($fieldData);
+                    $field = FieldFactory::create_field($fieldDefinition, $this);
                     $field->direct_insert('options');
                 }
             }

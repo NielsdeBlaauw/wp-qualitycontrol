@@ -11,7 +11,7 @@ abstract class Base{
   public function __construct(array $field, iContext $context){
     $this->field = $field;
     $this->context = $context;
-    $this->faker = $this->context->generator->faker;
+    //$this->faker = $this->context->generator->faker;
   }
 
   public function direct_insert($id){

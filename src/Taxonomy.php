@@ -63,7 +63,8 @@ class Taxonomy implements iContext{
     $fields = $this->generator->config->get("taxonomies.{$this->taxonomy->name}.fields", array());
     if(!empty($fields)){
       foreach($fields as $fieldData){
-        $field = FieldFactory::create_field($fieldData, $this);
+        $fieldDefinition = new \NDB\QualityControl\FieldDefinitions\Custom($fieldData);
+        $field = FieldFactory::create_field($fieldDefinition, $this);
         $field->custom_meta_insert($term_id);
       }
     }
@@ -75,7 +76,8 @@ class Taxonomy implements iContext{
       $fields = acf_get_fields_by_id($fieldgroup['ID']);
       if(!empty($fields)){
         foreach($fields as $fieldData){
-          $field = FieldFactory::create_field($fieldData, $this);
+          $fieldDefinition = new \NDB\QualityControl\FieldDefinitions\ACF($fieldData);
+          $field = FieldFactory::create_field($fieldDefinition, $this);
           $field->direct_insert('term_' . $term_id);
         }
       }

@@ -42,7 +42,8 @@ class UserRole implements iContext{
       $fields = acf_get_fields_by_id($fieldgroup['ID']);
       if(!empty($fields)){
         foreach($fields as $fieldData){
-          $field = FieldFactory::create_field($fieldData, $this);
+          $fieldDefinition = new \NDB\QualityControl\FieldDefinitions\ACF($fieldData);
+          $field = FieldFactory::create_field($fieldDefinition, $this);
           $field->direct_insert('user_' . $user_id);
         }
       }
@@ -53,7 +54,8 @@ class UserRole implements iContext{
     $fields = $this->generator->config->get("user_roles.{$this->role->name}.fields", array());
     if(!empty($fields)){
       foreach($fields as $fieldData){
-        $field = FieldFactory::create_field($fieldData, $this);
+        $fieldDefinition = new \NDB\QualityControl\FieldDefinitions\Custom($fieldData);
+        $field = FieldFactory::create_field($fieldDefinition, $this);
         $field->custom_meta_insert($user_id);
       }
     }

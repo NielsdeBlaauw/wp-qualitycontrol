@@ -15,7 +15,8 @@ class FlexibleContentLayout{
   public function parse_fields(){
     $this->fields = array();
     foreach($this->layout['sub_fields'] as $field_data){
-      $this->fields[] = FieldFactory::create_field($field_data, $this->parent->context);
+      $sub_field = new \NDB\QualityControl\FieldDefinitions\ACF($field_data);
+      $this->fields[] = FieldFactory::create_field($sub_field, $this->parent->context);
     }
   }
 
