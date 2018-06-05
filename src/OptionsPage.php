@@ -31,7 +31,7 @@ class OptionsPage implements iContext{
         if(!empty($fields)){
             foreach($fields as $fieldData){
                 $fieldDefinition = new \NDB\QualityControl\FieldDefinitions\Custom($fieldData);
-                $field = FieldFactory::create_field($fieldData, $this);
+                $field = FieldFactory::create_field($fieldDefinition, $this);
                 $field->custom_meta_insert(0);
             }
         }
