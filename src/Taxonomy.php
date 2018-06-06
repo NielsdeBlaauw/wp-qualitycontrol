@@ -18,7 +18,7 @@ class Taxonomy implements iContext{
     return 'Taxonomy ' . $this->taxonomy->name;
   }
 
-  public function generate(){
+  public function generate() : bool{
     $parent = 0;
     if($this->taxonomy->hierarchical && round(rand(0,1))){
       $terms = get_terms( array(
@@ -39,6 +39,7 @@ class Taxonomy implements iContext{
 
     $this->fill_acf_fields($term_id);
     $this->fill_custom_fields($term_id);
+    return true;
   }
 
   public static function clean(){

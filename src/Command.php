@@ -18,6 +18,7 @@ class Command extends \WP_CLI_Command{
    *     wp qualitycontrol generate
    */
   public function generate(array $args, array $args_assoc) : bool{
+    \NDB\QualityControl\Environment::$instance = new \NDB\QualityControl\Environments\WP();
     $this->optimize();
     \WP_CLI::line('Starting generation of WordPress objects.');
     $mappers = array(

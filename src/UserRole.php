@@ -18,7 +18,7 @@ class UserRole implements iContext{
     return 'User role ' . $this->role->name;
   }
 
-  public function generate(){
+  public function generate() : bool{
     $parent = 0;
     $user_id = wp_insert_user(array(
       'role'=>$this->role->name,
@@ -34,6 +34,7 @@ class UserRole implements iContext{
 
     $this->fill_acf_fields($user_id);
     $this->fill_custom_fields($user_id);
+    return true;
   }
 
   protected function fill_acf_fields($user_id){

@@ -1,9 +1,5 @@
 <?php
 
-function apply_filters($x, ...$y){
-    return $y[0];
-}
-
 function do_action(...$y){}
 
 if(!class_exists('\WP_CLI_Command')){
@@ -12,6 +8,7 @@ if(!class_exists('\WP_CLI_Command')){
 
 class FieldFactoryTest extends \PHPUnit\Framework\TestCase{
     public function testCanFallBackToNotImplementedField(){
+        \NDB\QualityControl\Environment::$instance = $this->createMock('\NDB\QualityControl\Environments\WP');
         $fieldDefinition = $this->createMock('\NDB\QualityControl\FieldDefinitions\ACF');
         $fieldDefinition->method('get_key')
              ->willReturn('NotAFieldKey');

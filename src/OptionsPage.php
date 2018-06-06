@@ -36,7 +36,7 @@ class OptionsPage implements iContext{
         }
     }
 
-    public function generate(){
+    public function generate() : bool{
         foreach($this->field_groups as $field_group){
             $fields = acf_get_fields_by_id($field_group['ID']);
             if(!empty($fields)){
@@ -48,6 +48,7 @@ class OptionsPage implements iContext{
             }
         }
         $this->fill_custom_fields();
+        return true;
     }
 
     public static function clean(){} // Not implemented on purpose

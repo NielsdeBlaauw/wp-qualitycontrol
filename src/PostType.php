@@ -19,7 +19,7 @@ class PostType implements iContext{
     return 'Post type ' . $this->post_type->name;
   }
 
-  public function generate(){
+  public function generate() : bool{
     $fieldDefinition = new \NDB\QualityControl\FieldDefinitions\Custom(array());
     $image_provider = new Image($fieldDefinition, $this);
     $post_title_max_length = \NDB\QualityControl\Configuration::get_instance()->get("post_types.{$this->post_type->name}.title_length", 20);
@@ -50,6 +50,7 @@ class PostType implements iContext{
     set_post_thumbnail($post_id, $image_provider->generate($post_id));
     $this->fill_acf_fields($post_id);
     $this->fill_custom_fields($post_id);
+    return true;
   }
 
   protected function fill_custom_fields($post_id){
