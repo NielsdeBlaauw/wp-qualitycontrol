@@ -1,15 +1,5 @@
 <?php
 
-function apply_filters($x, ...$y){
-    return $y[0];
-}
-
-function do_action(...$y){}
-
-if(!class_exists('\WP_CLI_Command')){
-    class WP_CLI_Command{}
-}
-
 class FieldFactoryTest extends \PHPUnit\Framework\TestCase{
     public function testCanFallBackToNotImplementedField(){
         $fieldDefinition = $this->createMock('\NDB\QualityControl\FieldDefinitions\ACF');

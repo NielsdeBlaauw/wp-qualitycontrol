@@ -15,7 +15,7 @@ abstract class Base{
   }
 
   public function direct_insert($id){
-    update_field($this->field['key'], $this->generate($id), $id);
+    update_field($this->field->get_key(), $this->generate($id), $id);
   }
 
   public function get_min() : int{
