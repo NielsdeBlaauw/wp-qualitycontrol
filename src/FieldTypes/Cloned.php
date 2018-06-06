@@ -10,7 +10,7 @@ class Cloned extends Base implements iFieldType{
   protected $max_field = 'max';
   protected $max_default = 65535;
 
-  public function __construct(array $field, iContext $context){
+  public function __construct(\NDB\QualityControl\FieldDefinitions\FieldDefinition $field, iContext $context){
     parent::__construct($field, $context);
     $this->parse_sub_fields();
   }

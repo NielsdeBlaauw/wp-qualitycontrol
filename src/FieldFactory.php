@@ -14,28 +14,28 @@ class FieldFactory{
   );
 
   public static function create_field(\NDB\QualityControl\FieldDefinitions\FieldDefinition $field, iContext $context): iFieldType{
-    $customFieldName = apply_filters('ndb/qualitycontrol/field_name=' . $field->get_name(), false, $field->get_raw(), $context);
+    $customFieldName = apply_filters('ndb/qualitycontrol/field_name=' . $field->get_name(), false, $field, $context);
     if($customFieldName){
       return $customFieldName;
     }
-    $customFieldKey = apply_filters('ndb/qualitycontrol/field_key=' . $field->get_key(), false, $field->get_raw(), $context);
+    $customFieldKey = apply_filters('ndb/qualitycontrol/field_key=' . $field->get_key(), false, $field, $context);
     if($customFieldKey){
       return $customFieldKey;
     }
-    $customFieldType = apply_filters('ndb/qualitycontrol/field_type=' . $field->get_type(), false, $field->get_raw(), $context);
+    $customFieldType = apply_filters('ndb/qualitycontrol/field_type=' . $field->get_type(), false, $field, $context);
     if($customFieldType){
       return $customFieldType;
     }
     if(isset(self::$fieldMapping[$field->get_type()]) && class_exists(self::$fieldMapping[$field->get_type()])){
       $fieldclass = self::$fieldMapping[$field->get_type()];
-      return new $fieldclass($field->get_raw(), $context);
+      return new $fieldclass($field, $context);
     }
     $generatedClassName = self::generate_classname($field->get_type());
     if(class_exists($generatedClassName)){
-      return new $generatedClassName($field->get_raw(), $context);
+      return new $generatedClassName($field, $context);
     }
 
-    return new NotImplementedField($field->get_raw(), $context);
+    return new NotImplementedField($field, $context);
   }
 
   public static function generate_classname(string $fieldtype): string{

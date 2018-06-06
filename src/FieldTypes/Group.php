@@ -7,7 +7,7 @@ use NDB\QualityControl\FieldFactory;
 class Group extends Base implements iFieldType{
   public $sub_fields = array();
 
-  public function __construct(array $field, iContext $context){
+  public function __construct(\NDB\QualityControl\FieldDefinitions\FieldDefinition $field, iContext $context){
     parent::__construct($field, $context);
     $this->parse_sub_fields();
   }
