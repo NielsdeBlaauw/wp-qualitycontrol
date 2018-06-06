@@ -12,6 +12,7 @@ class UserRole implements iContext{
     $this->role = $role;
     $this->process_order = $generator->config->get("user_roles.{$this->role->name}.process_order", 100);
     $this->nb_posts = $generator->config->get("user_roles.{$this->role->name}.nb_posts", 5);
+    $this->faker = \Faker\Factory::create();
   }
 
   public function get_name() : string{
@@ -22,12 +23,12 @@ class UserRole implements iContext{
     $parent = 0;
     $user_id = wp_insert_user(array(
       'role'=>$this->role->name,
-      'first_name'=>$this->generator->faker->firstname(),
-      'last_name'=>$this->generator->faker->lastname,
-      'user_login'=>$this->generator->faker->userName,
-      'user_email'=>$this->generator->faker->safeEmail,
-      'description'=>$this->generator->faker->paragraphs(2, true),
-      'user_url'=>$this->generator->faker->url,
+      'first_name'=>$this->faker->firstname(),
+      'last_name'=>$this->faker->lastname,
+      'user_login'=>$this->faker->userName,
+      'user_email'=>$this->faker->safeEmail,
+      'description'=>$this->faker->paragraphs(2, true),
+      'user_url'=>$this->faker->url,
       'user_pass'=>"password"
     ));
     update_user_meta($user_id, Generator::META_IDENTIFIER_KEY, '1');

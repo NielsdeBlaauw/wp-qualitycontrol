@@ -13,6 +13,7 @@ class PostType implements iContext{
     $this->post_type = $post_type;
     $this->process_order = $generator->config->get("post_types.{$this->post_type->name}.process_order", 300);
     $this->nb_posts = $generator->config->get("post_types.{$this->post_type->name}.nb_posts", 5);
+    $this->faker = \Faker\Factory::create();
   }
 
   public function get_name() : string{
@@ -36,14 +37,13 @@ class PostType implements iContext{
       }
     }
     $post_id = wp_insert_post(array(
-      'post_title'=>$this->generator->faker->sentence($this->generator->faker->numberBetween(1, $post_title_max_length)),
+      'post_title'=>$this->faker->sentence($this->faker->numberBetween(1, $post_title_max_length)),
       'post_type'=>$this->post_type->name,
       'post_status'=>'publish',
       'post_parent'=>$parent,
-      'post_excerpt'=>$this->generator->faker->words($this->generator->faker->numberBetween(0,55), true),
-      'post_content'=>$this->generator->faker->paragraphs($this->generator->faker->randomDigit, true),
-      'post_date'=>$this->generator->faker->optional->iso8601(),
-      'post_modified'=>$this->generator->faker->optional->iso8601(),
+      'post_content'=>$this->faker->paragraphs($this->faker->randomDigit, true),
+      'post_date'=>$this->faker->optional->iso8601(),
+      'post_modified'=>$this->faker->optional->iso8601(),
       'meta_input'=>array(
         Generator::META_IDENTIFIER_KEY=>'1',
       ),

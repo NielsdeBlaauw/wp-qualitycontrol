@@ -12,6 +12,7 @@ class Taxonomy implements iContext{
     $this->taxonomy = $taxonomy;
     $this->process_order = $generator->config->get("taxonomies.{$this->taxonomy->name}.process_order", 200);
     $this->nb_posts = $generator->config->get("taxonomies.{$this->taxonomy->name}.nb_posts", 5);
+    $this->faker = \Faker\Factory::create();
   }
 
   public function get_name() : string{
@@ -26,12 +27,12 @@ class Taxonomy implements iContext{
           'hide_empty' => false,
       ) );
       if(!empty($terms)){
-        $parent = $this->generator->faker->randomElement($terms);
+        $parent = $this->faker->randomElement($terms);
         $parent = $parent->term_id;
       }
     }
-    $term_id = wp_insert_term($this->generator->faker->text($this->generator->config->get("taxonomies.{$this->taxonomy->name}.title_length", 50)), $this->taxonomy->name, array(
-      'description'=>$this->generator->faker->paragraphs(2, true),
+    $term_id = wp_insert_term($this->faker->text($this->generator->config->get("taxonomies.{$this->taxonomy->name}.title_length", 50)), $this->taxonomy->name, array(
+      'description'=>$this->faker->paragraphs(2, true),
       'parent'=>$parent
     ));
     $term_id = $term_id['term_id'];

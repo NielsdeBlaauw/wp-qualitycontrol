@@ -9,15 +9,6 @@ class Generator{
   public $post_types = array();
 
   public function __construct(){
-    $this->faker = \Faker\Factory::create();
-    $this->faker->addProvider(new \Faker\Provider\Internet($this->faker));
-    $this->faker->addProvider(new \Faker\Provider\DateTime($this->faker));
-    $this->faker->addProvider(new \Faker\Provider\en_US\Address($this->faker));
-    $this->faker->addProvider(new \Faker\Provider\Miscellaneous($this->faker));
-    $this->faker->addProvider(new \Faker\Provider\Internet($this->faker));
-    $this->faker->addProvider(new \Faker\Provider\HtmlLorem($this->faker));
-    $this->faker->addProvider(new \Faker\Provider\en_US\Person($this->faker));
-    $this->faker->addProvider(new \Faker\Provider\en_US\Text($this->faker));
     $pre_config = new \Noodlehaus\Config(array('?' . realpath(__DIR__ . '/../../../../qualitycontrol.dist.json')));
     $config_files = array_merge(
       array('?' . realpath(__DIR__ . '/../../../../qualitycontrol.dist.json')), 
