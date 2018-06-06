@@ -7,11 +7,10 @@ use NDB\QualityControl\FieldTypes\Image;
 class UserRole implements iContext{
   public $post_type = null;
   public $process_order = 100;
-  public function __construct(\WP_Role $role, Generator $generator){
-    $this->generator = $generator;
+  public function __construct(\WP_Role $role){
     $this->role = $role;
-    $this->process_order = $generator->config->get("user_roles.{$this->role->name}.process_order", 100);
-    $this->nb_posts = $generator->config->get("user_roles.{$this->role->name}.nb_posts", 5);
+    $this->process_order = \NDB\QualityControl\Configuration::get_instance()->get("user_roles.{$this->role->name}.process_order", 100);
+    $this->nb_posts = \NDB\QualityControl\Configuration::get_instance()->get("user_roles.{$this->role->name}.nb_posts", 5);
     $this->faker = \Faker\Factory::create();
   }
 
@@ -52,7 +51,7 @@ class UserRole implements iContext{
   }
 
   protected function fill_custom_fields($user_id){
-    $fields = $this->generator->config->get("user_roles.{$this->role->name}.fields", array());
+    $fields = \NDB\QualityControl\Configuration::get_instance()->get("user_roles.{$this->role->name}.fields", array());
     if(!empty($fields)){
       foreach($fields as $fieldData){
         $fieldDefinition = new \NDB\QualityControl\FieldDefinitions\Custom($fieldData);

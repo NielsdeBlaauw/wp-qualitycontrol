@@ -7,11 +7,10 @@ use NDB\QualityControl\FieldTypes\Image;
 class Taxonomy implements iContext{
   public $post_type = null;
   public $process_order = 200;
-  public function __construct(\WP_Taxonomy $taxonomy, Generator $generator){
-    $this->generator = $generator;
+  public function __construct(\WP_Taxonomy $taxonomy){
     $this->taxonomy = $taxonomy;
-    $this->process_order = $generator->config->get("taxonomies.{$this->taxonomy->name}.process_order", 200);
-    $this->nb_posts = $generator->config->get("taxonomies.{$this->taxonomy->name}.nb_posts", 5);
+    $this->process_order = \NDB\QualityControl\Configuration::get_instance()->get("taxonomies.{$this->taxonomy->name}.process_order", 200);
+    $this->nb_posts = \NDB\QualityControl\Configuration::get_instance()->get("taxonomies.{$this->taxonomy->name}.nb_posts", 5);
     $this->faker = \Faker\Factory::create();
   }
 
@@ -31,7 +30,7 @@ class Taxonomy implements iContext{
         $parent = $parent->term_id;
       }
     }
-    $term_id = wp_insert_term($this->faker->text($this->generator->config->get("taxonomies.{$this->taxonomy->name}.title_length", 50)), $this->taxonomy->name, array(
+    $term_id = wp_insert_term($this->faker->text(\NDB\QualityControl\Configuration::get_instance()->get("taxonomies.{$this->taxonomy->name}.title_length", 50)), $this->taxonomy->name, array(
       'description'=>$this->faker->paragraphs(2, true),
       'parent'=>$parent
     ));
@@ -61,7 +60,7 @@ class Taxonomy implements iContext{
   }
 
   protected function fill_custom_fields($term_id){
-    $fields = $this->generator->config->get("taxonomies.{$this->taxonomy->name}.fields", array());
+    $fields = \NDB\QualityControl\Configuration::get_instance()->get("taxonomies.{$this->taxonomy->name}.fields", array());
     if(!empty($fields)){
       foreach($fields as $fieldData){
         $fieldDefinition = new \NDB\QualityControl\FieldDefinitions\Custom($fieldData);

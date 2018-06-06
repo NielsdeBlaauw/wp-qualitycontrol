@@ -20,7 +20,13 @@ class Command extends \WP_CLI_Command{
   public function generate(array $args, array $args_assoc) : bool{
     $this->optimize();
     \WP_CLI::line('Starting generation of WordPress objects.');
-    $generator = new Generator();
+    $mappers = array(
+      new \NDB\QualityControl\ContextMappers\OptionsPage(),
+      new \NDB\QualityControl\ContextMappers\PostTypes(),
+      new \NDB\QualityControl\ContextMappers\Taxonomies(),
+      new \NDB\QualityControl\ContextMappers\UserRoles(),
+    );
+    $generator = new Generator($mappers);
     $generator->generate();
     $this->finish_optimize();
     if(!empty(self::$warnings)){

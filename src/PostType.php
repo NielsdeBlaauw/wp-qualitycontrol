@@ -8,11 +8,10 @@ class PostType implements iContext{
   public $post_type = null;
   public $process_order = 300;
 
-  public function __construct(\WP_Post_Type $post_type, Generator $generator){
-    $this->generator = $generator;
+  public function __construct(\WP_Post_Type $post_type){
     $this->post_type = $post_type;
-    $this->process_order = $generator->config->get("post_types.{$this->post_type->name}.process_order", 300);
-    $this->nb_posts = $generator->config->get("post_types.{$this->post_type->name}.nb_posts", 5);
+    $this->process_order = \NDB\QualityControl\Configuration::get_instance()->get("post_types.{$this->post_type->name}.process_order", 300);
+    $this->nb_posts = \NDB\QualityControl\Configuration::get_instance()->get("post_types.{$this->post_type->name}.nb_posts", 5);
     $this->faker = \Faker\Factory::create();
   }
 
@@ -23,7 +22,7 @@ class PostType implements iContext{
   public function generate(){
     $fieldDefinition = new \NDB\QualityControl\FieldDefinitions\Custom(array());
     $image_provider = new Image($fieldDefinition, $this);
-    $post_title_max_length = $this->generator->config->get("post_types.{$this->post_type->name}.title_length", 20);
+    $post_title_max_length = \NDB\QualityControl\Configuration::get_instance()->get("post_types.{$this->post_type->name}.title_length", 20);
     $parent = 0;
     if($this->post_type->hierarchical && round(rand(0,1))){
       $parentOption = get_posts(array(
@@ -54,7 +53,7 @@ class PostType implements iContext{
   }
 
   protected function fill_custom_fields($post_id){
-    $fields = $this->generator->config->get("post_types.{$this->post_type->name}.fields", array());
+    $fields = \NDB\QualityControl\Configuration::get_instance()->get("post_types.{$this->post_type->name}.fields", array());
     if(!empty($fields)){
       foreach($fields as $fieldData){
         $fieldDefinition = new \NDB\QualityControl\FieldDefinitions\Custom($fieldData);

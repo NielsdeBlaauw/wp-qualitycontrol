@@ -3,9 +3,8 @@
 namespace NDB\QualityControl;
 
 class OptionsPage implements iContext{
-    public function __construct(Generator $generator){
-        $this->generator = $generator;
-        $this->process_order = $generator->config->get("options_page.process_order", 900);
+    public function __construct(){
+        $this->process_order = \NDB\QualityControl\Configuration::get_instance()->get("options_page.process_order", 900);
         $this->nb_posts = 1;
         $options_pages = acf_get_options_pages();
         $this->field_groups = array();
@@ -27,7 +26,7 @@ class OptionsPage implements iContext{
     }
 
     protected function fill_custom_fields(){
-        $fields = $this->generator->config->get("options_page.fields", array());
+        $fields = \NDB\QualityControl\Configuration::get_instance()->get("options_page.fields", array());
         if(!empty($fields)){
             foreach($fields as $fieldData){
                 $fieldDefinition = new \NDB\QualityControl\FieldDefinitions\Custom($fieldData);
