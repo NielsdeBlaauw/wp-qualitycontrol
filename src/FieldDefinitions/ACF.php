@@ -40,6 +40,13 @@ class ACF implements FieldDefinition{
         return (int) $this->raw[$field_name];   
     }
 
+    public function allow_multiple() : bool{
+        if(!isset($this->raw['multiple'])){
+            return false;
+        }
+        return (bool) $this->raw['multiple'];   
+    }
+
     public function is_required() : bool{
         if(!isset($this->raw['required'])){
             return false;

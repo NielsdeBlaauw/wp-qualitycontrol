@@ -23,6 +23,7 @@
     },
     "minimum-stability": "stable",
     "require-dev": {
-        "10up/wp_mock": "0.3.0"
+        "10up/wp_mock": "0.3.0",
+        "spatie/phpunit-watcher": "^1.5"
     }
 }

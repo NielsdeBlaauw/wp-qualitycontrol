@@ -14,12 +14,12 @@ class PostObject extends Base implements iFieldType{
   }
 
   protected function generate_from_field_object($field_object){    
-    $results = wp_cache_get('results_'.$this->field['key'], 'wp-qualitycontrol');
+    $results = wp_cache_get('results_'.$this->field->get_key(), 'wp-qualitycontrol');
     if(empty($results)){
       $results = $field_object->get_ajax_query(array(
-        'field_key'=>$this->field['key']
+        'field_key'=>$this->field->get_key()
       ));
-      wp_cache_set('results_'.$this->field['key'], $results, 'wp-qualitycontrol');
+      wp_cache_set('results_'.$this->field->get_key(), $results, 'wp-qualitycontrol');
     }
     $ids = array();
     if(is_array($results['results'])){
@@ -37,12 +37,15 @@ class PostObject extends Base implements iFieldType{
     $this->ids = $ids;
     $max = $this->get_max();
     if($max == 0){
-      \NDB\QualityControl\Command::$warnings[$this->field['key'].'_no_relation_possible'] = sprintf('Custom field %s depends on a different content-type, but could not find correct results. You probably need to edit the process_order for this content-type.', $this->field['key']);
+      \NDB\QualityControl\Command::$warnings[$this->field->get_key().'_no_relation_possible'] = sprintf('Custom field %s depends on a different content-type, but could not find correct results. You probably need to edit the process_order for this content-type.', $this->field->get_key());
       return array();
     }
     $elements = $this->faker->randomElements($ids, $this->faker->numberBetween($this->get_min(), $max));
     if(count($elements) > 1){
       return $elements;
+    }
+    if(empty($elements)){
+      return array();
     }
     return $elements[0];
   }
@@ -53,7 +56,7 @@ class PostObject extends Base implements iFieldType{
 
   public function get_max() : int{
     $max_to_select = 1;
-    if(isset($this->field['multiple']) && $this->field['multiple']){
+    if($this->field->allow_multiple()){
       $max_to_select = parent::get_max();
     }
     return min(count($this->ids), $max_to_select);

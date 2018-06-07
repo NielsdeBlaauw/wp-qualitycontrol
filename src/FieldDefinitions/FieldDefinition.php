@@ -10,4 +10,5 @@ interface FieldDefinition extends \ArrayAccess{
     public function get_min(string $field_name) : int;
     public function get_max(string $field_name) : int;
     public function is_required() : bool;
+    public function allow_multiple() : bool;
 }
