@@ -3,7 +3,10 @@
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/6.5/phpunit.xsd"
          bootstrap="tests/bootstrap.php"
          beStrictAboutOutputDuringTests="true"
-         verbose="true">
+         verbose="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true">
     <testsuite name="default">
         <directory suffix="Test.php">tests</directory>
     </testsuite>
