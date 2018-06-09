@@ -14,6 +14,9 @@ class ACF implements FieldDefinition{
     }
 
     public function get_key() : string{
+        if(isset($this->raw['__key'])){
+            return $this->raw['__key'];
+        }
         return $this->raw['key'];
     }
 
@@ -48,6 +51,13 @@ class ACF implements FieldDefinition{
             return false;
         }
         return (bool) $this->raw['required'];
+    }
+
+    public function get_sub_fields() : array{
+        if(!isset($this->raw['sub_fields']) || !is_array($this->raw['sub_fields'])){
+            return array();
+        }
+        return $this->raw['sub_fields'];
     }
     
     /**

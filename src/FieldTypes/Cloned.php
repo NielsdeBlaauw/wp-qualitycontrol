@@ -17,10 +17,9 @@ class Cloned extends Base implements iFieldType{
 
   protected function parse_sub_fields(){
     $this->sub_fields = array();
-    foreach($this->field['sub_fields'] as $sub_field_data){
-      $sub_field_data['key'] = $sub_field_data['__key'];
+    foreach($this->field->get_sub_fields() as $sub_field_data){
       $sub_field = new \NDB\QualityControl\FieldDefinitions\ACF($sub_field_data);
-      $this->sub_fields[$sub_field_data['name']] = FieldFactory::create_field($sub_field, $this->context);
+      $this->sub_fields[$sub_field->get_key()] = FieldFactory::create_field($sub_field, $this->context);
     }
   }
 
